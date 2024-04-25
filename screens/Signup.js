@@ -5,11 +5,38 @@ import COLORS from '../constants/colors';
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../components/Button';
+import { auth } from '../firebase';
 
 const Signup = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-    return (
+    const [emailaddress, setEmailaddress] = useState('');
+    const [mobilenumber, setMobilenumber] = useState('');
+    const [password, setPassword] = useState('');
+
+    const changeEmailaddress = (e) => {
+        console.log(e)
+        setEmailaddress(e.target.value);
+      };
+      const changeMobilenumber = (e) => {
+        setMobilenumber(e.target.value);
+      };
+      const changePassword = (e) => {
+        setPassword(e.target.value);
+      };
+    const submit = async (e) => {
+try {
+    const result = await createUserWithEmailAndPassword(
+        auth,
+        emailaddress,
+        password
+    );
+
+    }catch (err) {
+alert(err)
+    }
+    }
+    return (    
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
                 <View style={{ marginVertical: 22 }}>
@@ -49,9 +76,11 @@ const Signup = ({ navigation }) => {
                             placeholder='Enter your email address'
                             placeholderTextColor={COLORS.black}
                             keyboardType='email-address'
+                            value={emailaddress}
                             style={{
                                 width: "100%"
                             }}
+                            onChange={changeEmailaddress}
                         />
                     </View>
                 </View>
@@ -78,12 +107,14 @@ const Signup = ({ navigation }) => {
                             placeholder='+91'
                             placeholderTextColor={COLORS.black}
                             keyboardType='numeric'
+                            value={mobilenumber}
                             style={{
                                 width: "12%",
                                 borderRightWidth: 1,
                                 borderLeftColor: COLORS.grey,
                                 height: "100%"
                             }}
+                            onChange={changeMobilenumber}
                         />
 
                         <TextInput
@@ -118,9 +149,11 @@ const Signup = ({ navigation }) => {
                             placeholder='Enter your password'
                             placeholderTextColor={COLORS.black}
                             secureTextEntry={isPasswordShown}
+                            value={password}
                             style={{
                                 width: "100%"
                             }}
+                            onChange={changePassword}
                         />
 
                         <TouchableOpacity
@@ -163,6 +196,7 @@ const Signup = ({ navigation }) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
+                    onPress={submit}
                 />
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
