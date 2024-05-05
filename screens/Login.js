@@ -5,10 +5,41 @@ import COLORS from '../constants/colors';
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../components/Button';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';                                              
 
 const Login = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+
+    const changePassword = (text) => {
+        setPassword(text)
+    }
+    console.log( email);
+    const changeEmail = (text) => {
+        setEmail(text)
+    }
+    
+    const Login = async () => {
+        try {
+            const result = await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+            const userID = result.user.uid
+            console.log("🚀 ~ Login ~ userID:", userID)
+
+            
+
+        }catch (err) {
+            alert(err)
+        }
+    }
+
     
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -53,6 +84,8 @@ const Login = ({ navigation }) => {
                             style={{
                                 width: "100%"
                             }}
+                            value= {email}
+                            onChangeText={changeEmail} 
                         />
                     </View>
                 </View>
@@ -81,6 +114,8 @@ const Login = ({ navigation }) => {
                             style={{
                                 width: "100%"
                             }}
+                            value={password}
+                            onChangeText={changePassword}
                         />
 
                         <TouchableOpacity
@@ -123,6 +158,7 @@ const Login = ({ navigation }) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
+                    onPress ={Login}
                 />
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
