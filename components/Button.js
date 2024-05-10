@@ -1,24 +1,29 @@
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
+import { Text, TouchableHighlight, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
 import COLORS from '../constants/colors'
 
 const Button = (props) => {
-    const filledBgColor = props.color || COLORS.primary;
-    const outlinedColor = COLORS.white;
-    const bgColor = props.filled ? filledBgColor : outlinedColor;
-    const textColor = props.filled ? COLORS.white : COLORS.primary;
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Détermination de la couleur de fond en fonction du survol
+    const bgColor = isHovered ? COLORS.blue : (props.filled ? props.color || COLORS.blue : COLORS.white);
+
+    // Détermination de la couleur du texte
+    const textColor = props.filled ? COLORS.white : COLORS.blue;
 
     return (
-        <TouchableOpacity
+        <TouchableHighlight
             style={{
                 ...styles.button,
                 ...{ backgroundColor: bgColor },
                 ...props.style
             }}
             onPress={props.onPress}
+            onHideUnderlay={() => setIsHovered(false)}
+            onShowUnderlay={() => setIsHovered(true)}
         >
-            <Text style={{ fontSize: 18, ... { color: textColor } }}>{props.title}</Text>
-        </TouchableOpacity>
+            <Text style={{ fontSize: 18, color: textColor }}>{props.title}</Text>
+        </TouchableHighlight>
     )
 }
 
@@ -26,11 +31,12 @@ const styles = StyleSheet.create({
     button: {
         paddingBottom: 16,
         paddingVertical: 10,
-        borderColor: COLORS.primary,
+        borderColor: COLORS.white,
         borderWidth: 2,
         borderRadius: 12,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     }
 })
+
 export default Button

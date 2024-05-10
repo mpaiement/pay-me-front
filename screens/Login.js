@@ -36,6 +36,7 @@ const Login = ({ navigation }) => {
                         marginVertical: 8
                     }}>Email address</Text>
 
+
                     <View style={{
                         width: "100%",
                         height: 48,
@@ -126,7 +127,7 @@ const Login = ({ navigation }) => {
                 />
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
-                    <View
+                    {/* <View
                         style={{
                             flex: 1,
                             height: 1,
@@ -208,7 +209,7 @@ const Login = ({ navigation }) => {
                     flexDirection: "row",
                     justifyContent: "center",
                     marginVertical: 22
-                }}>
+                }}> */}
                     <Text style={{ fontSize: 16, color: COLORS.black }}>Don't have an account ? </Text>
                     <Pressable
                         onPress={() => navigation.navigate("Signup")}

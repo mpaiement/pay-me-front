@@ -1,17 +1,18 @@
+import * as React from 'react';
 import { View, Text, Pressable, Image } from 'react-native'
-import React from 'react'
+// import React from 'react';
 import { LinearGradient } from "expo-linear-gradient";
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
 
-const Welcome = ({ navigation }) => {
+const Welcome = ({ navigation }) => {   
 
     return (
         <LinearGradient
             style={{
                 flex: 1
             }}
-            colors={[COLORS.secondary, COLORS.primary]}
+            colors={[COLORS.blue1, COLORS.blue]}
         >
             <View style={{ flex: 1 }}>
                 <View>
@@ -142,6 +143,34 @@ const Welcome = ({ navigation }) => {
                                 marginLeft: 4
                             }}>Login</Text>
                         </Pressable>
+
+                        {/* boutton pour acceder a la page du marchand 
+                        <Button
+                        title="Go to marchandscreen"
+                        onPress={() => navigation.navigate("Marchand")}
+                        />
+                         {/* boutton pour acceder a la page du client  */}
+                         {/* <Button
+                        title="Go to clientscreen"
+                        onPress={() => navigation.navigate("Client")}
+                        /> */} 
+
+           {/* <Button
+                    title="Page Marchand"
+                    onPress={() => navigation.navigate("Marchand")} // Navigation vers l'écran Marchand
+                    style={{
+                        marginTop: 22,
+                        width: "100%"
+                    }}
+                /> */}
+                {/* <Button
+                    title="Page Client"
+                    onPress={() => navigation.navigate("Client")} // Navigation vers l'écran Client
+                    style={{
+                        marginTop: 22,
+                        width: "100%"
+                    }}
+                /> */}
 
                     </View>
                 </View>
