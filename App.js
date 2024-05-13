@@ -6,9 +6,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { Login, Signup, Welcome} from "./screens";
 // import Marchand from "./screens/Marchand"; // Assurez-vous d'importer la composante Marchand
 // import Client from './screens/client';
-// import Choix from './screens/choix';
-const Stack = createNativeStackNavigator();
+import Choix from './screens/choix';
 
+const Stack = createNativeStackNavigator();
+import PaymentForm from './screens/PaymentForm';
 export default function App() {
   return (
     <NavigationContainer>
@@ -22,15 +23,7 @@ export default function App() {
             headerShown: false
           }}
         />
-{/* 
-         <Stack.Screen
-          name="Choix"
-          component={Choix}
-          options={{
-            headerShown: false
-          }}
-        />
-      */}
+
          
         <Stack.Screen
           name="Login"
@@ -46,6 +39,22 @@ export default function App() {
             headerShown: false
           }}
         />
+         <Stack.Screen
+          name="PaymentForm"
+          component={PaymentForm}
+          options={{
+            headerShown: false
+          }}
+        />
+        
+         <Stack.Screen
+          name="choix"
+          component={Choix}
+          options={{
+            headerShown: false
+          }}
+        />
+     
         {/* <Stack.Screen
           name="Marchand"
           component={Marchand}

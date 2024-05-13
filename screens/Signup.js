@@ -15,75 +15,73 @@ const Signup = ({ navigation }) => {
     const [emailaddress, setEmailaddress] = useState('');
     const [mobilenumber, setMobilenumber] = useState('');
     const [password, setPassword] = useState('');
-    const [cardNumber, setCardNumber] = useState('');
-    const [cvv, setCVV] = useState('');
-    const [expirationDate, setExpirationDate] = useState('');
-    const [idNumber, setIdNumber] = useState('');
+    const [emailError, setEmailError] = useState();
+    const [phoneError, setPhoneError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
     const changeEmailaddress = (text) => {
         setEmailaddress(text);
     };
 
-    //   const changeMobilenumber = (text) => {
-    //     setMobilenumber(text);
-    //   };
     const changeMobilenumber = (text) => {
-        const inputNumber = e.target.value.replace(/\D/g, '');
-        setPhoneNumber(inputNumber);
+        setMobilenumber(text);
+        setPhoneError(''); // Réinitialise l'erreur en cas de saisie de nouveau numéro
+    };    
     
-        if (inputNumber.length !== 10 || !validatePhoneNumber(inputNumber)) {
-          setErrors({
-            ...errors,
-            phoneNumber: 'Please enter a valid phone number',
-          });
-        } else {
-          setErrors({ ...errors, phoneNumber: '' });
-        }
-      };
     
-      const validateMobilenumber = (number) => {
-        const algerianNumberRegex = /^(0)(5|6|7)\d{8}$/;
-        return algerianNumberRegex.test(number);
-      };
-
-
-    
-      const changePassword = (text) => {
+    const changePassword = (text) => {
         setPassword(text);
-      };
-      const changeCVV = (text) => {
-        setCVV(text);
-      };
-      const changeExpirationDate = (text) => {
-        setExpirationDate(text);
-      };
-      const changeCardNumber = (text) => {
-        setCardNumber(text);
-      };
-      const changeIdNumber = (text) => {
-        setIdNumber(text);
-      };
-     
+        setPasswordError(''); // Réinitialise l'erreur lorsque l'utilisateur commence à saisir un nouveau mot de passe
+    };
+    
       const submit = async () => {
+        const errors = {};
         try {
             const result = await createUserWithEmailAndPassword(
                 auth,
                 emailaddress,
                 password
             );
-        
 
-            console.log("🚀 ~ submit ~ result:", result)
+            const userID = result.user.uid
+            console.log("🚀 ~ Login ~ userID:", userID)
+
+            // Passez à la nouvelle page
+            navigation.navigate('PaymentForm', { userID });    
+            // console.log("🚀 ~ submit ~ result:", result)
 
             // TODO Navigate to Home screen after successful signup
 
-        }catch (err) {
+        // }catch (err) {
+        //     Alert.alert('Error', err.message);
+        // }
+
+    } catch (err) {
+        console.log(err); // Ajoutez cette ligne pour vérifier la structure de l'erreur
+        // Vérifier si l'erreur est due à une adresse e-mail déjà utilisée
+        if (err.code === 'auth/email-already-in-use') {
+            // Alert.alert('Error', "This email address is already in use. Please use a different email address.");
+            setEmailError('This email address is already in use. Please use a different email address.')
+        // } else if (err.code === 'auth/internal-error') {
+        //     // Display the custom error message for internal errors
+        //     setErrors('Internal error occurred. Please try again later.');
+        } else if (err.code === 'auth/invalid-phone-number') {
+            // Afficher le message d'erreur personnalisé pour un numéro de téléphone invalide
+            setPhoneError('Invalid phone number. Please enter a valid phone number.');
+        }else if (err.code === 'auth/phone-number-already-exists') {
+            // Afficher le message d'erreur personnalisé pour un numéro de téléphone déjà utilisé
+            setPhoneError('This phone number is already in use. Please use a different phone number.');
+        } else if (err.code === 'auth/weak-password' || err.code === 'auth/invalid-password') {
+            // Afficher le message d'erreur personnalisé pour un mot de passe invalide
+            setPasswordError('Invalid password. Please enter a valid password.');
+        }
+        else {
+            // Gérer les autres erreurs ici
             Alert.alert('Error', err.message);
         }
-
-        
-        
     }
+}
+
     return (    
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -96,11 +94,6 @@ const Signup = ({ navigation }) => {
                     }}>
                         Create Account
                     </Text>
-
-                    {/* <Text style={{
-                        fontSize: 16,
-                        color: COLORS.black
-                    }}>Connect with your friend today!</Text> */}
                 </View>
 
                 <View style={{ marginBottom: 12 }}>
@@ -131,90 +124,11 @@ const Signup = ({ navigation }) => {
                             onChangeText={changeEmailaddress}
                         />
                     </View>
+                    <View>
+                        {emailError && <Text style={{ color: 'red' }}>{emailError}</Text>}
+                    </View>
                 </View>
-
-                <View style={{ marginBottom: 12 }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        marginVertical: 8
-                    }}>Card Number</Text>
-
-                <View style={{
-                        width: "100%",
-                        height: 48,
-                        borderColor: COLORS.black,
-                        borderWidth: 1,
-                        borderRadius: 8,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        paddingLeft: 22
-                    }}>
-                <TextInput
-                    placeholder='Card Number'
-                    placeholderTextColor={COLORS.black}
-                    keyboardType='numeric'
-                    value={cardNumber}
-                    // style={{ marginBottom: 12, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
-                    style={{
-                        width: "100%"
-                    }}
-                    onChangeText={setCardNumber}
-                />
-                </View>
-                </View>
-
-                <View style={{ marginBottom: 5 }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        marginVertical: 8
-                    }}>CVV</Text>
-
-
-                    
-                <TextInput
-                    placeholder='CVV'
-                    value={cvv}
-                    onChangeText={setCVV}
-                    keyboardType='numeric'
-                    style={{ marginBottom: 12, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
-                />
-
-                
-                </View>
-                <View style={{ marginBottom: 12 }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        marginVertical: 8
-                    }}>Expiration Date</Text>
-
-                <TextInput
-                    placeholder='Expiration Date'
-                    value={expirationDate}
-                    onChangeText={setExpirationDate}
-                    style={{ marginBottom: 12, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
-                />
-                 </View>
-
-
-                 <View style={{ marginBottom: 5 }}>
-                    <Text style={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        marginVertical: 8
-                    }}>ID card number</Text>
-
-                <TextInput
-                    placeholder='ID card number'
-                    value={idNumber}
-                    onChangeText={setIdNumber}
-                    keyboardType='numeric'
-                    style={{ marginBottom: 12, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
-                />
-                </View>
-
+              
                 <View style={{ marginBottom: 12 }}>
                     <Text style={{
                         fontSize: 16,
@@ -234,7 +148,7 @@ const Signup = ({ navigation }) => {
                         paddingLeft: 22
                     }}>
                         <TextInput
-                            placeholder='+91'
+                            placeholder='+213'
                             placeholderTextColor={COLORS.black}
                             keyboardType='numeric'
                             value={mobilenumber}
@@ -256,6 +170,10 @@ const Signup = ({ navigation }) => {
                             }}
                         />
                     </View>
+                    <View>
+                        {phoneError && <Text style={{ color: 'red' }}>{phoneError}</Text>}
+                    </View>
+
                 </View>
 
                 <View style={{ marginBottom: 12 }}>
@@ -303,6 +221,13 @@ const Signup = ({ navigation }) => {
 
                         </TouchableOpacity>
                     </View>
+                    {/* <View>
+                        {errors && <Text style={{ color: 'red' }}>{errors}</Text>}
+                    </View> */}
+                    <View>
+                        {passwordError && <Text style={{ color: 'red' }}>{passwordError}</Text>}
+                    </View>
+
                 </View>
 
                 <View style={{
