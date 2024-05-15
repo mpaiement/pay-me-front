@@ -21,20 +21,43 @@ const Signup = ({ navigation }) => {
 
     const changeEmailaddress = (text) => {
         setEmailaddress(text);
+        setEmailError(''); // Réinitialise le message d'erreur
     };
 
     const changeMobilenumber = (text) => {
         setMobilenumber(text);
-        setPhoneError(''); // Réinitialise l'erreur en cas de saisie de nouveau numéro
-    };    
+        setPhoneError(''); // Réinitialise le message d'erreur
+    }; 
     
     
     const changePassword = (text) => {
         setPassword(text);
-        setPasswordError(''); // Réinitialise l'erreur lorsque l'utilisateur commence à saisir un nouveau mot de passe
+        setPasswordError(''); // Réinitialise le message d'erreur
     };
     
       const submit = async () => {
+        // Vérifier si les champs sont vides
+    if (!emailaddress) {
+        setEmailError('Please enter your email address');
+        
+    }       
+
+    if (!mobilenumber) {
+        setPhoneError('Please enter your mobile number');
+       
+    }
+
+    if (!password) {
+        setPasswordError('Please enter your password');
+      
+    }
+
+    // Vérifier si les cases à cocher sont cochées
+    if (!isChecked) {
+        Alert.alert('Error', 'Please agree to the terms and conditions');
+        
+    }
+
         const errors = {};
         try {
             const result = await createUserWithEmailAndPassword(
@@ -43,11 +66,11 @@ const Signup = ({ navigation }) => {
                 password
             );
 
-            const userID = result.user.uid
-            console.log("🚀 ~ Login ~ userID:", userID)
+            const idUser = result.user.uid
+            console.log("🚀 ~ Login ~ idUser:", idUser)
 
             // Passez à la nouvelle page
-            navigation.navigate('PaymentForm', { userID });    
+            navigation.navigate('PaymentForm', { idUser });    
             // console.log("🚀 ~ submit ~ result:", result)
 
             // TODO Navigate to Home screen after successful signup
@@ -122,6 +145,7 @@ const Signup = ({ navigation }) => {
                                 width: "100%"
                             }}
                             onChangeText={changeEmailaddress}
+                            
                         />
                     </View>
                     <View>

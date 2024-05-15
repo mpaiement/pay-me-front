@@ -30,8 +30,8 @@ const Login = ({ navigation }) => {
                 password
             );
 
-            const userID = result.user.uid
-            console.log("🚀 ~ Login ~ userID:", userID)
+            const idUser = result.user.uid
+            console.log("🚀 ~ Login ~ idUser:", idUser)
 
             
 

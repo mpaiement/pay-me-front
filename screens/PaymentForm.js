@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable } from 'react-native';
+import axios from 'axios';
 import COLORS from '../constants/colors';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from '@react-navigation/native';
@@ -10,27 +11,62 @@ import moment from 'moment';
 const PaymentForm = ({ route }) => {
     const [cardNumber, setCardNumber] = useState('');
     const [cvv, setCVV] = useState('');
-    const [expirationDate, setExpirationDate] = useState('');
+    const [expiryDate, setExpiryDate] = useState('');
     const [idNumber, setIdNumber] = useState('');
     const [cardNumberError, setCardNumberError] = useState('');
     const [cvvError, setCVVError] = useState('');
-    const [expirationDateError, setExpirationDateError] = useState('');
+    const [expiryDateError, setExpiryDateError] = useState('');
     const [idNumberError, setIdNumberError] = useState('');
     const navigation = useNavigation();
 
-    const userID = route.params.userID; // Récupérez l'UID passé depuis Signup.js
-    const navigatechoix = () => {
+    const idUser = route.params.idUser; // Récupérez l'UID passé depuis Signup.js
+
+    // const navigatechoix = () => {
+    //     // Vérifiez si tous les champs sont valides
+    //     if (cardNumber && cvv && expiryDate && idNumber) {
+    //         navigation.navigate('choix');
+    //     } else {
+    //         // Affichez des messages d'erreur pour les champs manquants
+    //         if (!cardNumber) setCardNumberError('Please enter card number');
+    //         if (!cvv) setCVVError('Please enter CVV');
+    //         if (!expiryDate) setExpiryDateError('Please enter expiration date');
+    //         if (!idNumber) setIdNumberError('Please enter ID card number');
+    //     }
+    // };
+
+    const navigatechoix = async () => {
         // Vérifiez si tous les champs sont valides
-        if (cardNumber && cvv && expirationDate && idNumber) {
-            navigation.navigate('choix');
+        if (cardNumber && cvv && expiryDate && idNumber) {
+            try {
+                // Envoyer les données au back-end
+                const response = await axios.post('http://localhost:3000/user/create', {
+                    idUser,
+                    cardNumber,
+                    cvv,
+                    expiryDate,
+                    idNumber
+                });
+
+                // Vérifiez la réponse du serveur
+                if (response.status === 200) {
+                    navigation.navigate('choix');
+                } else {
+                    // Gérez les erreurs du serveur ici
+                    alert('Erreur lors de la soumission du formulaire');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Erreur lors de la soumission du formulaire');
+            }
         } else {
             // Affichez des messages d'erreur pour les champs manquants
             if (!cardNumber) setCardNumberError('Please enter card number');
             if (!cvv) setCVVError('Please enter CVV');
-            if (!expirationDate) setExpirationDateError('Please enter expiration date');
+            if (!expiryDate) setExpiryDateError('Please enter expiration date');
             if (!idNumber) setIdNumberError('Please enter ID card number');
         }
     };
+
     // Valider le format du numéro de carte bancaire
     const validateCardNumber = (number) => {
         if (/^\d{16}$/.test(number)) {
@@ -63,16 +99,17 @@ const validateIDNumber = (id) => {
     }
 };
 // Fonction de validation de la date d'expiration
-const validateExpirationDate = (date) => {
-    // Vérifier si la date est au bon format (MM/YYYY) et qu'elle est supérieure à la date actuelle
-    if (moment(date, 'MM/YYYY', true).isValid() && moment(date, 'MM/YYYY').isAfter(moment(), 'month')) {
-        setExpirationDateError('');
+const validateexpiryDate = (date) => {
+    // Vérifier si la date est au bon format (YYYY-MM-DD) et qu'elle est supérieure à la date actuelle
+    if (moment(date, 'YYYY-MM-DD', true).isValid() && moment(date, 'YYYY-MM-DD').isAfter(moment(), 'day')) {
+        setExpiryDateError('');
         return true;
     } else {
-        setExpirationDateError('Please enter a valid expiration date (MM/YYYY)');
+        setExpiryDateError('Please enter a valid expiration date (YYYY-MM-DD)');
         return false;
     }
 };
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
              <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -152,15 +189,15 @@ const validateExpirationDate = (date) => {
 
                 <TextInput
                     placeholder='Expiration Date'
-                    value={expirationDate}
-                    // onChangeText={setExpirationDate}
+                    value={expiryDate}
+                    // onChangeText={setExpiryDate}
                     onChangeText={(text) => {
-                        setExpirationDate(text);
-                        validateExpirationDate(text);
+                        setExpiryDate(text);
+                        validateexpiryDate(text);
                     }}
                     style={{ marginBottom: 12, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
                 />
-                 <Text style={{ color: 'red', marginBottom: 5 }}>{expirationDateError}</Text>
+                 <Text style={{ color: 'red', marginBottom: 5 }}>{expiryDateError}</Text>
                  </View>
 
 
