@@ -1,4 +1,4 @@
-package com.anonymous.paymefront;
+package com.mpaiement.payme;
 
 import android.os.Build;
 import android.os.Bundle;
