@@ -18,14 +18,21 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.paymefront"
+      "package": "com.mpaiement.payme"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6093176f-9690-4a75-8684-7a1c1d54f087"
+      }
+    },
+    "owner": "mpaiement"
   }
 }
