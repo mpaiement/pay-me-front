@@ -8,6 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import { useRoute } from '@react-navigation/native';
+import { getAuth } from 'firebase/auth';
 
 const PaymentForm = ({}) => {
     const [name, setName] = useState('');
@@ -23,30 +24,36 @@ const PaymentForm = ({}) => {
     const navigation = useNavigation();
     
     const route = useRoute();
-    const { idUser, email, phone} = route.params;
+    const { phone} = route.params;
+   const user = getAuth()
+   const id =user?.currentUser?.uid
+   const email1 =user?.currentUser?.email
+
+  
+    console.log("🚀 ~ PaymentForm ~ id:", id)
 
     const navigatehome = async () => {
         // Vérifiez si tous les champs sont valides
         
         if (name && cardNumber && cvv && expiryDate && idNumber) {
             try {
-            console.log(  idUser,
+            console.log(  id,
                 name,
                 cardNumber,
                 cvv,
                 expiryDate,
                 idNumber,
-                email,
+                email1,
                 phone,);  
                 // Envoyer les données au back-end
                 const response = await axios.post('http://localhost:3000/user/create', {
-                    idUser,
+                    id,
                     name,
                     cardNumber,
                     cvv,
                     expiryDate,
                     idNumber,
-                    email,
+                    email1,
                     phone,
                 });
 
@@ -90,6 +97,7 @@ const PaymentForm = ({}) => {
             return false;
         }
     };
+    
       // Valider le format du CVV
       const validateCVV = (cvvNumber) => {
         if (/^\d{3,4}$/.test(cvvNumber)) {

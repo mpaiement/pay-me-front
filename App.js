@@ -1,92 +1,97 @@
-
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { Login, Signup, Welcome} from "./screens";
 import React, { useState, useEffect } from 'react';
-import auth from '@react-native-firebase/auth';
-
-
-// import Marchand from "./screens/Marchand"; // Assurez-vous d'importer la composante Marchand
-// import Client from './screens/client';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Login, Signup, Welcome } from './screens';
 import Home from './screens/home';
+import PaymentForm from './screens/PaymentForm';
+import { auth } from './firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const Stack = createNativeStackNavigator();
-import PaymentForm from './screens/PaymentForm';
-
 
 export default function App() {
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const subscriber = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      if (initializing) setInitializing(false);
+    });
+    return subscriber; // Unsubscribe on unmount
+  },
+   []);
+
+  if (initializing) return null; // Peut-être afficher un écran de chargement
+
   return (
     <NavigationContainer>
-      
-      <Stack.Navigator
-        initialRouteName='Welcome'
-      >
-           <Stack.Screen
-          name="Welcome"
-          component={Welcome}
-          options={{
-            headerShown: false
-          }}
-        />
-
-         
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-          name="Signup"
-          component={Signup}
-          options={{
-            headerShown: false
-          }}
-        />
-         <Stack.Screen
-          name="PaymentForm"
-          component={PaymentForm}
-          options={{
-            headerShown: false
-          }}
-        />
-        
-         <Stack.Screen
-          name="home"
-          component={Home}
-          options={{
-            headerShown: false
-          }}
-        />
-     
+      <Stack.Navigator initialRouteName={user ? 'PaymentForm' : 'Welcome'}>
+        {user ? (
+          <>
+            <Stack.Screen
+              name="PaymentForm"
+              component={PaymentForm}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{
+                headerShown: false,
+              }}
+            />
+          
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Welcome"
+              component={Welcome}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Signup"
+              component={Signup}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="PaymentForm"
+              component={PaymentForm}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </>
+        )}
         {/* <Stack.Screen
           name="Marchand"
           component={Marchand}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         /> */}
         {/* <Stack.Screen
           name="Client"
           component={Client}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
