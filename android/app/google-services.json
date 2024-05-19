@@ -1,0 +1,29 @@
+{
+    "project_info": {
+      "project_number": "284229778540",
+      "project_id": "mobile-paiement",
+      "storage_bucket": "mobile-paiement.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:284229778540:android:f2b309abf6c2ecfb122c49",
+          "android_client_info": {
+            "package_name": "com.mpaiement.payme"
+          }
+        },
+        "oauth_client": [],
+        "api_key": [
+          {
+            "current_key": "AIzaSyBGtrZJi-jyXF3WFGApdz7fCEmtn-6QxiE"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": []
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
