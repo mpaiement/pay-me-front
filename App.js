@@ -4,15 +4,22 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { Login, Signup, Welcome} from "./screens";
+import React, { useState, useEffect } from 'react';
+import auth from '@react-native-firebase/auth';
+
+
 // import Marchand from "./screens/Marchand"; // Assurez-vous d'importer la composante Marchand
 // import Client from './screens/client';
-import Choix from './screens/choix';
+import Home from './screens/home';
 
 const Stack = createNativeStackNavigator();
 import PaymentForm from './screens/PaymentForm';
+
+
 export default function App() {
   return (
     <NavigationContainer>
+      
       <Stack.Navigator
         initialRouteName='Welcome'
       >
@@ -48,8 +55,8 @@ export default function App() {
         />
         
          <Stack.Screen
-          name="choix"
-          component={Choix}
+          name="home"
+          component={Home}
           options={{
             headerShown: false
           }}

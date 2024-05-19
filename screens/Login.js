@@ -1,4 +1,4 @@
-import { View, Text, Image , Pressable, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, Image , Pressable, TextInput, TouchableOpacity, Alert }  from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from '../constants/colors';
@@ -18,6 +18,7 @@ const Login = ({ navigation }) => {
         setPassword(text)
     }
     console.log( email);
+
     const changeEmail = (text) => {
         setEmail(text)
     }
@@ -32,11 +33,12 @@ const Login = ({ navigation }) => {
 
             const idUser = result.user.uid
             console.log("🚀 ~ Login ~ idUser:", idUser)
-
+            
+            navigation.navigate('home');
             
 
         }catch (err) {
-            alert(err)
+            Alert.alert('Login Error', err.message);
         }
     }
 

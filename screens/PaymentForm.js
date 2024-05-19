@@ -7,66 +7,79 @@ import COLORS from '../constants/colors';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
+import { useRoute } from '@react-navigation/native';
 
-const PaymentForm = ({ route }) => {
+const PaymentForm = ({}) => {
+    const [name, setName] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [cvv, setCVV] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [idNumber, setIdNumber] = useState('');
+    const [nameError, setNameError] = useState('');
     const [cardNumberError, setCardNumberError] = useState('');
     const [cvvError, setCVVError] = useState('');
     const [expiryDateError, setExpiryDateError] = useState('');
     const [idNumberError, setIdNumberError] = useState('');
     const navigation = useNavigation();
+    
+    const route = useRoute();
+    const { idUser, email, phone} = route.params;
 
-    const idUser = route.params.idUser; // Récupérez l'UID passé depuis Signup.js
-
-    // const navigatechoix = () => {
-    //     // Vérifiez si tous les champs sont valides
-    //     if (cardNumber && cvv && expiryDate && idNumber) {
-    //         navigation.navigate('choix');
-    //     } else {
-    //         // Affichez des messages d'erreur pour les champs manquants
-    //         if (!cardNumber) setCardNumberError('Please enter card number');
-    //         if (!cvv) setCVVError('Please enter CVV');
-    //         if (!expiryDate) setExpiryDateError('Please enter expiration date');
-    //         if (!idNumber) setIdNumberError('Please enter ID card number');
-    //     }
-    // };
-
-    const navigatechoix = async () => {
+    const navigatehome = async () => {
         // Vérifiez si tous les champs sont valides
-        if (cardNumber && cvv && expiryDate && idNumber) {
+        
+        if (name && cardNumber && cvv && expiryDate && idNumber) {
             try {
+            console.log(  idUser,
+                name,
+                cardNumber,
+                cvv,
+                expiryDate,
+                idNumber,
+                email,
+                phone,);  
                 // Envoyer les données au back-end
                 const response = await axios.post('http://localhost:3000/user/create', {
                     idUser,
+                    name,
                     cardNumber,
                     cvv,
                     expiryDate,
-                    idNumber
+                    idNumber,
+                    email,
+                    phone,
                 });
 
                 // Vérifiez la réponse du serveur
-                if (response.status === 200) {
-                    navigation.navigate('choix');
+                if (response.status === 201) {
+                    navigation.navigate('home');
                 } else {
                     // Gérez les erreurs du serveur ici
                     alert('Erreur lors de la soumission du formulaire');
                 }
             } catch (error) {
                 console.error(error);
-                alert('Erreur lors de la soumission du formulaire');
+                alert('Erreur lors de la soumission du formulaire1',error);
             }
         } else {
             // Affichez des messages d'erreur pour les champs manquants
+            if (!name) setNameError('Please enter your name');
             if (!cardNumber) setCardNumberError('Please enter card number');
             if (!cvv) setCVVError('Please enter CVV');
             if (!expiryDate) setExpiryDateError('Please enter expiration date');
             if (!idNumber) setIdNumberError('Please enter ID card number');
         }
     };
-
+    // Valider le format du nom
+    const validateName = (name) => {
+        if (name.trim() !== '') {
+            setNameError('');
+            return true;
+        } else {
+            setNameError('Please enter a valid name');
+            return false;
+        }
+    };
     // Valider le format du numéro de carte bancaire
     const validateCardNumber = (number) => {
         if (/^\d{16}$/.test(number)) {
@@ -90,11 +103,11 @@ const PaymentForm = ({ route }) => {
 
    // Fonction de validation du numéro de carte d'identité
 const validateIDNumber = (id) => {
-    if (/^[0-9]{6}$/.test(id)) {
+    if (/^[0-9]{9}$/.test(id)) {
         setIdNumberError('');
         return true;
     } else {
-        setIdNumberError('Please enter a valid ID card number (6 digits)');
+        setIdNumberError('Please enter a valid ID card number (9 digits)');
         return false;
     }
 };
@@ -122,6 +135,35 @@ const validateexpiryDate = (date) => {
                     }}>
                         Payment page
                     </Text>
+                    <View style={{ marginBottom: 12 }}>
+                        <Text style={{
+                            fontSize: 16,
+                            fontWeight: 400,
+                            marginVertical: 8
+                        }}>Name</Text>
+                        <View style={{
+                            width: "100%",
+                            height: 48,
+                            borderColor: COLORS.black,
+                            borderWidth: 1,
+                            borderRadius: 8,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            paddingLeft: 22
+                        }}>
+                            <TextInput
+                                placeholder='Name'
+                                placeholderTextColor={COLORS.black}
+                                value={name}
+                                style={{ width: "100%" }}
+                                onChangeText={(text) => {
+                                    setName(text);
+                                    validateName(text);
+                                }}
+                            />
+                        </View>
+                        <Text style={{ color: 'red', marginBottom: 5 }}>{nameError}</Text>
+                    </View>
 
                      <View style={{ marginBottom: 12 }}>
                     <Text style={{
@@ -145,7 +187,6 @@ const validateexpiryDate = (date) => {
                     placeholderTextColor={COLORS.black}
                     keyboardType='numeric'
                     value={cardNumber}
-                    // style={{ marginBottom: 12, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
                     style={{
                         width: "100%"
                     }}
@@ -200,7 +241,6 @@ const validateexpiryDate = (date) => {
                  <Text style={{ color: 'red', marginBottom: 5 }}>{expiryDateError}</Text>
                  </View>
 
-
                  <View style={{ marginBottom: 5 }}>
                     <Text style={{
                         fontSize: 16,
@@ -231,10 +271,10 @@ const validateexpiryDate = (date) => {
                             justifyContent: 'center',
                             marginTop: 0
                         }}
-                        // onPress={() => navigation.navigate('choix')}
-                        onPress={navigatechoix}
+                       
+                        onPress={navigatehome}
                     >
-                        <Text style={{ color: COLORS.white, fontSize: 18 }}>Aller à la nouvelle page</Text>
+                        <Text style={{ color: COLORS.white, fontSize: 18 }}>Sign Up</Text>
                     </Pressable>
                     </View>
         </SafeAreaView>
