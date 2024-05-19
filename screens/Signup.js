@@ -15,7 +15,6 @@ const Signup = ({ navigation }) => {
     const [isChecked, setIsChecked] = useState(false);
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    console.log("🚀 ~ Signup ~ phone:", phone)
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState();
     const [phoneError, setPhoneError] = useState('');
@@ -28,9 +27,7 @@ const Signup = ({ navigation }) => {
     };
 
     const changephone = (text) => {
-        setPhone(text
-            
-        );
+        setPhone(text);
         setPhoneError(''); // Réinitialise le message d'erreur
     }; 
     
@@ -76,9 +73,8 @@ const Signup = ({ navigation }) => {
                 password
             );
 
-            const idUser = result.user.uid
-            
-            console.log("🚀 ~ Login ~ idUser:", idUser)
+            // const idUser = result.user.uid
+            // console.log("🚀 ~ Login ~ idUser:", idUser)
             
             // // Envoyer un e-mail de vérification
             // const authInstance = getAuth();
@@ -90,15 +86,8 @@ const Signup = ({ navigation }) => {
             //     console.error('Error sending email verification:', error);
             // });
 
-            // Passez à la nouvelle page
-            navigation.navigate('PaymentForm', phone);    
-            // console.log("🚀 ~ submit ~ result:", result)
-
-            // TODO Navigate to Home screen after successful signup
-
-        // }catch (err) {
-        //     Alert.alert('Error', err.message);
-        // }
+            // Passez à la page prochaine
+            navigation.navigate('PaymentForm', {phone});    
 
     } catch (err) {
         console.log(err); // Ajoutez cette ligne pour vérifier la structure de l'erreur
@@ -109,12 +98,12 @@ const Signup = ({ navigation }) => {
         // } else if (err.code === 'auth/internal-error') {
         //     // Display the custom error message for internal errors
         //     setErrors('Internal error occurred. Please try again later.');
-        // } else if (err.code === 'auth/invalid-phone-number') {
-        //     // Afficher le message d'erreur personnalisé pour un numéro de téléphone invalide
-        //     setPhoneError('Invalid phone number. Please enter a valid phone number.');
-        // }else if (err.code === 'auth/phone-number-already-exists') {
-        //     // Afficher le message d'erreur personnalisé pour un numéro de téléphone déjà utilisé
-        //     setPhoneError('This phone number is already in use. Please use a different phone number.');
+        } else if (err.code === 'auth/invalid-phone-number') {
+            // Afficher le message d'erreur personnalisé pour un numéro de téléphone invalide
+            setPhoneError('Invalid phone number. Please enter a valid phone number.');
+        }else if (err.code === 'auth/phone-number-already-exists') {
+            // Afficher le message d'erreur personnalisé pour un numéro de téléphone déjà utilisé
+            setPhoneError('This phone number is already in use. Please use a different phone number.');
         } else if (err.code === 'auth/weak-password' || err.code === 'auth/invalid-password') {
             // Afficher le message d'erreur personnalisé pour un mot de passe invalide
             setPasswordError('Invalid password. Please enter a valid password.');
@@ -129,18 +118,6 @@ const Signup = ({ navigation }) => {
 console.log(  
     email,
     phone,);  
-
-     // Valider le format du numéro de téléphone algérien
-     const validatePhoneNumber = (number) => {
-        const algerianPhoneNumberPattern = /^(?:\+213|0)(5|6|7)\d{8}$/;
-        if (algerianPhoneNumberPattern.test(number)) {
-            setPhoneError('');
-            return true;
-        } else {
-            setPhoneError('Please enter a valid Algerian phone number');
-            return false;
-        }
-    };
     return (    
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>

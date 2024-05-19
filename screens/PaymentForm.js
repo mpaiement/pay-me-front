@@ -24,12 +24,10 @@ const PaymentForm = ({}) => {
     const navigation = useNavigation();
     
     const route = useRoute();
-    const { phone} = route.params;
+    // const { phone} = route.params;
    const user = getAuth()
    const id =user?.currentUser?.uid
    const email1 =user?.currentUser?.email
-
-  
     console.log("🚀 ~ PaymentForm ~ id:", id)
 
     const navigatehome = async () => {
@@ -44,7 +42,8 @@ const PaymentForm = ({}) => {
                 expiryDate,
                 idNumber,
                 email1,
-                phone,);  
+                phone
+                );  
                 // Envoyer les données au back-end
                 const response = await axios.post('http://localhost:3000/user/create', {
                     id,
@@ -54,7 +53,7 @@ const PaymentForm = ({}) => {
                     expiryDate,
                     idNumber,
                     email1,
-                    phone,
+                    phone
                 });
 
                 // Vérifiez la réponse du serveur
@@ -97,7 +96,6 @@ const PaymentForm = ({}) => {
             return false;
         }
     };
-    
       // Valider le format du CVV
       const validateCVV = (cvvNumber) => {
         if (/^\d{3,4}$/.test(cvvNumber)) {
