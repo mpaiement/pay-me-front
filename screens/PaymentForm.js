@@ -24,13 +24,15 @@ const PaymentForm = ({}) => {
     const navigation = useNavigation();
     
     const route = useRoute();
-    // const { phone} = route.params;
+   
+    // const { phone } = route.params;
    const user = getAuth()
    const id =user?.currentUser?.uid
    const email1 =user?.currentUser?.email
     console.log("🚀 ~ PaymentForm ~ id:", id)
+    // console.log("Phone:", phone);
 
-    const navigatehome = async () => {
+    const navigatehomeScreen = async () => {
         // Vérifiez si tous les champs sont valides
         
         if (name && cardNumber && cvv && expiryDate && idNumber) {
@@ -42,23 +44,23 @@ const PaymentForm = ({}) => {
                 expiryDate,
                 idNumber,
                 email1,
-                phone
+                // phone
                 );  
                 // Envoyer les données au back-end
                 const response = await axios.post('http://localhost:3000/user/create', {
-                    id,
+                 idUser:id,
                     name,
                     cardNumber,
                     cvv,
                     expiryDate,
                     idNumber,
-                    email1,
-                    phone
+                    email:email1,
+                    phone:'+213555555555'
                 });
 
                 // Vérifiez la réponse du serveur
                 if (response.status === 201) {
-                    navigation.navigate('home');
+                    navigation.navigate('HomeScreen');
                 } else {
                     // Gérez les erreurs du serveur ici
                     alert('Erreur lors de la soumission du formulaire');
@@ -278,7 +280,7 @@ const validateexpiryDate = (date) => {
                             marginTop: 0
                         }}
                        
-                        onPress={navigatehome}
+                        onPress={navigatehomeScreen}
                     >
                         <Text style={{ color: COLORS.white, fontSize: 18 }}>Sign Up</Text>
                     </Pressable>
