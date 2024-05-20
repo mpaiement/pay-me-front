@@ -6,55 +6,88 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../components/Button';
 import { auth } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword ,getAuth, sendEmailVerification }  from 'firebase/auth';
+
 
 
 const Signup = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-    const [emailaddress, setEmailaddress] = useState('');
-    const [mobilenumber, setMobilenumber] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState();
     const [phoneError, setPhoneError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [termsError, setTermsError] = useState('');
 
-    const changeEmailaddress = (text) => {
-        setEmailaddress(text);
+    const changeemail = (text) => {
+        setEmail(text);
+        setEmailError(''); // Réinitialise le message d'erreur
     };
 
-    const changeMobilenumber = (text) => {
-        setMobilenumber(text);
-        setPhoneError(''); // Réinitialise l'erreur en cas de saisie de nouveau numéro
-    };    
+    const changephone = (text) => {
+        setPhone(text);
+        setPhoneError(''); // Réinitialise le message d'erreur
+    }; 
     
     
     const changePassword = (text) => {
         setPassword(text);
-        setPasswordError(''); // Réinitialise l'erreur lorsque l'utilisateur commence à saisir un nouveau mot de passe
+        setPasswordError(''); // Réinitialise le message d'erreur
     };
     
       const submit = async () => {
+        let isValid = true;
+        // Vérifier si les champs sont vides
+    if (!email) {
+        setEmailError('Please enter your email address');
+        isValid = false;
+    }       
+
+    if (!phone) {
+        setPhoneError('Please enter your mobile number');
+        isValid = false;
+    }
+
+    if (!password) {
+        setPasswordError('Please enter your password');
+        isValid = false;
+    }
+
+    // Vérifier si les cases à cocher sont cochées
+    if (!isChecked) {
+        setTermsError('You must agree to the terms and conditions');
+            isValid = false;
+        } else {
+            setTermsError('');
+        }
+
         const errors = {};
+        if (isValid) {
+           
         try {
             const result = await createUserWithEmailAndPassword(
                 auth,
-                emailaddress,
+                email,
                 password
             );
 
-            const userID = result.user.uid
-            console.log("🚀 ~ Login ~ userID:", userID)
+            // const idUser = result.user.uid
+            // console.log("🚀 ~ Login ~ idUser:", idUser)
+            
+            // // Envoyer un e-mail de vérification
+            // const authInstance = getAuth();
+            // sendEmailVerification(authInstance.currentUser)
+            // .then(() => {
+            //     console.log('Email verification sent successfully!');
+            // })
+            // .catch((error) => {
+            //     console.error('Error sending email verification:', error);
+            // });
 
-            // Passez à la nouvelle page
-            navigation.navigate('PaymentForm', { userID });    
-            // console.log("🚀 ~ submit ~ result:", result)
-
-            // TODO Navigate to Home screen after successful signup
-
-        // }catch (err) {
-        //     Alert.alert('Error', err.message);
-        // }
+            // Passez à la page prochaine
+            navigation.navigate('PaymentForm', {phone});    
 
     } catch (err) {
         console.log(err); // Ajoutez cette ligne pour vérifier la structure de l'erreur
@@ -81,7 +114,10 @@ const Signup = ({ navigation }) => {
         }
     }
 }
-
+};
+console.log(  
+    email,
+    phone,);  
     return (    
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -117,16 +153,17 @@ const Signup = ({ navigation }) => {
                             placeholder='Enter your email address'
                             placeholderTextColor={COLORS.black}
                             keyboardType='email-address'
-                            value={emailaddress}
+                            value={email}
                             style={{
                                 width: "100%"
                             }}
-                            onChangeText={changeEmailaddress}
+                            onChangeText={changeemail}
+                            
                         />
                     </View>
-                    <View>
+                   
                         {emailError && <Text style={{ color: 'red' }}>{emailError}</Text>}
-                    </View>
+                    
                 </View>
               
                 <View style={{ marginBottom: 12 }}>
@@ -151,14 +188,14 @@ const Signup = ({ navigation }) => {
                             placeholder='+213'
                             placeholderTextColor={COLORS.black}
                             keyboardType='numeric'
-                            value={mobilenumber}
+                           
                             style={{
                                 width: "12%",
                                 borderRightWidth: 1,
                                 borderLeftColor: COLORS.grey,
                                 height: "100%"
                             }}
-                            onChangeText={changeMobilenumber}
+                           
                         />
 
                         <TextInput
@@ -168,11 +205,13 @@ const Signup = ({ navigation }) => {
                             style={{
                                 width: "80%"
                             }}
+                            value={phone}
+                            onChangeText={changephone}
                         />
                     </View>
-                    <View>
+                    
                         {phoneError && <Text style={{ color: 'red' }}>{phoneError}</Text>}
-                    </View>
+                    
 
                 </View>
 
@@ -221,12 +260,10 @@ const Signup = ({ navigation }) => {
 
                         </TouchableOpacity>
                     </View>
-                    {/* <View>
-                        {errors && <Text style={{ color: 'red' }}>{errors}</Text>}
-                    </View> */}
-                    <View>
+                    
+                   
                         {passwordError && <Text style={{ color: 'red' }}>{passwordError}</Text>}
-                    </View>
+                  
 
                 </View>
 
@@ -244,8 +281,10 @@ const Signup = ({ navigation }) => {
                     <Text>I aggree to the terms and conditions</Text>
                 </View>
 
+                {termsError && <Text style={{ color: 'red' }}>{termsError}</Text>}
+
                 <Button
-                    title="Sign Up"
+                    title="Next"
                     filled
                     style={{
                         marginTop: 0,
@@ -338,17 +377,26 @@ const Signup = ({ navigation }) => {
                     justifyContent: "center",
                     marginVertical: 22
                  }}> */}
-                    <Text style={{ fontSize: 16, color: COLORS.black }}>Already have an account</Text>
-                    <Pressable
-                        onPress={() => navigation.navigate("Login")}
-                    >
-                        <Text style={{
-                            fontSize: 16,
-                            color: COLORS.primary,
-                            fontWeight: "bold",
-                            marginLeft: 6
-                        }}>Login</Text>
-                    </Pressable>
+                 <View style={{
+    flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: 22
+}}>
+    <Text>
+        <Text style={{ fontSize: 16, color: COLORS.black }}>Already have an account</Text>
+        <Pressable
+            onPress={() => navigation.navigate("Login")}
+        >
+            <Text style={{
+                fontSize: 16,
+                color: COLORS.primary,
+                fontWeight: "bold",
+                marginLeft: 6
+            }}>Login</Text>
+        </Pressable>
+    </Text>
+</View>
+
                  </View>
                 </View>
         </SafeAreaView>
