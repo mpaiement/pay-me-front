@@ -60,7 +60,10 @@ const PaymentForm = ({}) => {
 
                 // Vérifiez la réponse du serveur
                 if (response.status === 201) {
-                    navigation.navigate('HomeScreen');
+                    // navigation.navigate('HomeScreen');
+                    // Assurez-vous que vous utilisez la bonne référence au navigateur
+navigation.navigate('TabNavigator', { screen: 'HomeScreen' });
+
                 } else {
                     // Gérez les erreurs du serveur ici
                     alert('Erreur lors de la soumission du formulaire');
@@ -119,6 +122,7 @@ const validateIDNumber = (id) => {
         return false;
     }
 };
+
 // Fonction de validation de la date d'expiration
 const validateexpiryDate = (date) => {
     // Vérifier si la date est au bon format (YYYY-MM-DD) et qu'elle est supérieure à la date actuelle
@@ -214,8 +218,6 @@ const validateexpiryDate = (date) => {
                         marginVertical: 8
                     }}>CVV</Text>
 
-
-                    
                 <TextInput
                     placeholder='CVV'
                     value={cvv}

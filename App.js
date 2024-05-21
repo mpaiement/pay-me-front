@@ -10,7 +10,9 @@ import ProfileScreen from './screens/profileScreen.js';
 import HistoryScreen from './screens/HistoryScreen.js';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +20,7 @@ function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ color, size }) => {
           let iconName;
           if (route.name === 'Home') {
             iconName = 'home';
@@ -47,7 +49,7 @@ function TabNavigator() {
         },
       })}
     >
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="History" component={HistoryScreen} />
     </Tab.Navigator>
@@ -59,25 +61,38 @@ export default function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const subscriber = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      if (initializing) setInitializing(false);
-    });
-    return subscriber; // Unsubscribe on unmount
-  },
-   []);
+    const checkUser = async () => {
+      const storedUser = await AsyncStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+      const subscriber = onAuthStateChanged(auth, (user) => {
+        setUser(user);
+        if (user) {
+          AsyncStorage.setItem('user', JSON.stringify(user));
+        } else {
+          AsyncStorage.removeItem('user');
+        }
+        if (initializing) setInitializing(false);
+      });
+      return subscriber; // Unsubscribe on unmount
+    };
+
+    checkUser();
+  }, []);
 
   if (initializing) return null; // Peut-être afficher un écran de chargement
 
-  // let devRoute = 'Main'
-  // let authState = true
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={user ? 'PaymentForm' : 'Welcome'}>
-      {/* <Stack.Navigator initialRouteName={ devRoute}> */}
-        {/* {authState ? ( */}
-          {user? (
+      <Stack.Navigator initialRouteName={user ? 'TabNavigator' : 'Welcome'}>
+        {user ? (
           <>
+            <Stack.Screen
+              name="TabNavigator"
+              component={TabNavigator}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="PaymentForm"
               component={PaymentForm}
@@ -85,29 +100,15 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            <Stack.Screen
-              name="Main"
-              component={TabNavigator}
-              options={{ headerShown: false }}
-            />
-           
-
-
           </>
         ) : (
           <>
-           
             <Stack.Screen
               name="Welcome"
               component={Welcome}
               options={{
                 headerShown: false,
               }}
-            />
-            <Stack.Screen
-              name="Main"
-              component={TabNavigator}
-              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="Login"
@@ -130,27 +131,13 @@ export default function App() {
                 headerShown: false,
               }}
             />
-              
           </>
         )}
-        {/* <Stack.Screen
-          name="Marchand"
-          component={Marchand}
-          options={{
-            headerShown: false,
-          }}
-        /> */}
-        {/* <Stack.Screen
-          name="Client"
-          component={Client}
-          options={{
-            headerShown: false,
-          }}
-        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
 const styles = StyleSheet.create({
   iconContainer: {
     alignItems: 'center',

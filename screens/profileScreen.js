@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Alert, TextInput, View, Button, Image ,TouchableOpacity} from "react-native";
+import React, { useState, useEffect } from "react";
+import { Alert, TextInput, View, Button } from "react-native";
 import axios from "axios";
-// import { useRoute } from '@react-navigation/native';
 
 function ProfileScreen() {
   const [formData, setFormData] = useState({
@@ -12,40 +11,50 @@ function ProfileScreen() {
     expiryDate: "",
     idNumber: ""
   });
-// Fonction de gestion de changement de formulaire
-const handleChange = (name, value) => {
-  setFormData({
-    ...formData,
-    [name]: value,
-    [email]: value, 
-    [cardNumber]: value,  
-    [expiryDate]: value,
-    [idNumber]: value,
-  });
-};
-const getProfile = async () => {
-  try {
-    const response = await axios.get("http://localhost:3000/user");
-    setFormData(response.data);
-  } catch (error) {
-    console.error("Erreur lors de la récupération des données du profil :", error);
-  }
-};
-const updateProfile = async () => {
-  try {
-    await axios.put("http://localhost:3000/user/putUser", formData);
-    Alert.alert("Succès", "Profil mis à jour avec succès");
-  } catch (error) {
-    console.error("Erreur lors de la mise à jour du profil :", error);
-    Alert.alert("Erreur", "Échec de la mise à jour du profil");
-  }
-};
+
+  const handleChange = (name, value) => {
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const getProfile = async () => {
+    try {
+      // Remplacez "http://localhost:3000/user/" par l'URL correcte pour récupérer le profil de l'utilisateur actuellement connecté
+      const response = await axios.get("http://localhost:3000/user");
+      const profileData = response.data;
+  
+      // Vérifiez et assignez des valeurs par défaut si des champs sont indéfinis
+      setFormData({
+        name: profileData.name || "",
+        email: profileData.email || "",
+        cardNumber: profileData.cardNumber || "",
+        cvv: profileData.cvv || "",
+        expiryDate: profileData.expiryDate || "",
+        idNumber: profileData.idNumber || ""
+      });
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données du profil :", error);
+    }
+  };
+  // console.log("🚀 ~ getProfile ~ error:",  idUser)
+  const updateProfile = async () => {
+    try {
+      await axios.put("http://localhost:3000/user/putUser", formData);
+      Alert.alert("Succès", "Profil mis à jour avec succès");
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du profil :", error);
+      Alert.alert("Erreur", "Échec de la mise à jour du profil");
+    }
+  };
 
   useEffect(() => {
     getProfile();
   }, []);
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <View style={{ width: '80%', padding: 20, borderWidth: 1, borderColor: 'gray', borderRadius: 10 }}>
         <TextInput
           style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}
@@ -88,4 +97,5 @@ const updateProfile = async () => {
     </View>
   );
 }
+
 export default ProfileScreen;
