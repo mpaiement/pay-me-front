@@ -91,6 +91,7 @@ navigation.navigate('TabNavigator', { screen: 'HomeScreen' });
             return false;
         }
     };
+    
     // Valider le format du numéro de carte bancaire
     const validateCardNumber = (number) => {
         if (/^\d{16}$/.test(number)) {

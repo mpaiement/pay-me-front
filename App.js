@@ -16,7 +16,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function TabNavigator() {
+function TabNavigator({ route }) {
+  const { idUser } = route.params;
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -49,9 +51,9 @@ function TabNavigator() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="History" component={HistoryScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} initialParams={{ idUser }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} initialParams={{ idUser }} />
+      <Tab.Screen name="History" component={HistoryScreen} initialParams={{ idUser }} />
     </Tab.Navigator>
   );
 }
@@ -92,6 +94,7 @@ export default function App() {
               name="TabNavigator"
               component={TabNavigator}
               options={{ headerShown: false }}
+              initialParams={{ idUser: user.uid }} // Passez l'ID utilisateur ici
             />
             <Stack.Screen
               name="PaymentForm"
