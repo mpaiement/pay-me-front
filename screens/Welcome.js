@@ -1,182 +1,163 @@
 import * as React from 'react';
-import { View, Text, Pressable, Image } from 'react-native'
-// import React from 'react';
+import { View, Text, Pressable, Image, ScrollView, StyleSheet }from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
 import COLORS from '../constants/colors';
 import Button from '../components/Button';
 
-const Welcome = ({ navigation }) => {   
-
+const Welcome = ({ navigation }) => {
     return (
         <LinearGradient
-            style={{
-                flex: 1
-            }}
+            style={{ flex: 1 }}
             colors={[COLORS.blue1, COLORS.blue]}
         >
-            <View style={{ flex: 1 }}>
-                <View>
-                    <Image
-                        source={require("../assets/hero1.jpg")}
-                        style={{
-                            height: 100,
-                            width: 100,
-                            borderRadius: 20,
-                            position: "absolute",
-                            top: 10,
-                            transform: [
-                                { translateX: 20 },
-                                { translateY: 50 },
-                                { rotate: "-15deg" }
-                            ]
-                        }}
-                    />
-
-                    <Image
-                        source={require("../assets/hero3.jpg")}
-                        style={{
-                            height: 100,
-                            width: 100,
-                            borderRadius: 20,
-                            position: "absolute",
-                            top: -30,
-                            left: 100,
-                            transform: [
-                                { translateX: 50 },
-                                { translateY: 50 },
-                                { rotate: "-5deg" }
-                            ]
-                        }}
-                    />
-
-                    <Image
-                        source={require("../assets/hero3.jpg")}
-                        style={{
-                            width: 100,
-                            height: 100,
-                            borderRadius: 20,
-                            position: "absolute",
-                            top: 130,
-                            left: -50,
-                            transform: [
-                                { translateX: 50 },
-                                { translateY: 50 },
-                                { rotate: "15deg" }
-                            ]
-                        }}
-                    />
-
-                    <Image
-                        source={require("../assets/hero2.jpg")}
-                        style={{
-                            height: 200,
-                            width: 200,
-                            borderRadius: 20,
-                            position: "absolute",
-                            top: 110,
-                            left: 100,
-                            transform: [
-                                { translateX: 50 },
-                                { translateY: 50 },
-                                { rotate: "-15deg" }
-                            ]
-                        }}
-                    />
-                </View>
-
-                {/* content  */}
-
-                <View style={{
-                    paddingHorizontal: 22,
-                    position: "absolute",
-                    top: 400,
-                    width: "100%"
-                }}>
-                    <Text style={{
-                        fontSize: 50,
-                        fontWeight: 800,
-                        color: COLORS.white
-                    }}>Let's Get</Text>
-                    <Text style={{
-                        fontSize: 46,
-                        fontWeight: 800,
-                        color: COLORS.white
-                    }}>Started</Text>
-
-                    <View style={{ marginVertical: 22 }}>
-                        <Text style={{
-                            fontSize: 16,
-                            color: COLORS.white,
-                            marginVertical: 4
-                        }}>Connect with each other with chatting</Text>
-                        <Text style={{
-                            fontSize: 16,
-                            color: COLORS.white,
-                        }}>Calling, Enjoy Safe and private texting</Text>
-                    </View>
-
-                    <Button
-                        title="Join Now"
-                        onPress={() => navigation.navigate("Signup")}
-                        style={{
-                            marginTop: 22,
-                            width: "100%"
-                        }}
-                    />
-
-                    <View style={{
-                        flexDirection: "row",
-                        marginTop: 12,
-                        justifyContent: "center"
-                    }}>
-                        <Text style={{
-                            fontSize: 16,
-                            color: COLORS.white
-                        }}>Already have an account ?</Text>
-                        <Pressable
-                            onPress={() => navigation.navigate("Login")}
-                        >
-                            <Text style={{
-                                fontSize: 16,
-                                color: COLORS.white,
-                                fontWeight: "bold",
-                                marginLeft: 4
-                            }}>Login</Text>
-                        </Pressable>
-
-                        {/* boutton pour acceder a la page du marchand 
-                        <Button
-                        title="Go to marchandscreen"
-                        onPress={() => navigation.navigate("Marchand")}
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <View style={{ flex: 1}}>
+                    <View style={styles.imagesContainer}>
+                        {/* <Image
+                            source={require("../assets/hero1.jpg")}
+                            style={styles.image1}
+                        /> */}
+                        {/* <Image
+                            source={require("../assets/welcome3.png")}
+                            style={styles.image2}
+                        /> */}
+                        {/* <Image
+                            source={require("../assets/hero3.jpg")}
+                            style={styles.image3}
+                        /> */}
+                        <Image
+                            source={require("../assets/welcome3.png")}
+                            style={styles.image4}
                         />
-                         {/* boutton pour acceder a la page du client  */}
-                         {/* <Button
-                        title="Go to clientscreen"
-                        onPress={() => navigation.navigate("Client")}
-                        /> */} 
+                    </View>
 
-           {/* <Button
-                    title="Page Marchand"
-                    onPress={() => navigation.navigate("Marchand")} // Navigation vers l'écran Marchand
-                    style={{
-                        marginTop: 22,
-                        width: "100%"
-                    }}
-                /> */}
-                {/* <Button
-                    title="Page Client"
-                    onPress={() => navigation.navigate("Client")} // Navigation vers l'écran Client
-                    style={{
-                        marginTop: 22,
-                        width: "100%"
-                    }}
-                /> */}
+                   
+                    <View style={styles.contentContainer}>
+                        <Text style={styles.title}>Let's Get</Text>
+                        <Text style={styles.subtitle}>Started</Text>
 
+                        <View style={{ marginVertical: 22 }}>
+                            <Text style={styles.description}>
+                            Connect instantly by scanning and paying
+                            </Text>
+                            <Text style={styles.description}>
+                            Scan, Enjoy Secure and Instant Payments
+                            </Text>
+                        </View>
+
+                        <Button
+                            title="Join Now"
+                            onPress={() => navigation.navigate("Signup")}
+                            style={{ marginTop: 22, width: "100%" }}
+                        />
+
+                        <View style={styles.footerContainer}>
+                            <Text style={styles.footerText}>Already have an account?</Text>
+                            <Pressable onPress={() => navigation.navigate("Login")}>
+                                <Text style={styles.loginText}>Login</Text>
+                            </Pressable>
+                        </View>
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         </LinearGradient>
-    )
-}
+    );
+};
 
-export default Welcome
+const styles = StyleSheet.create({
+    imagesContainer: {
+        flex: 1,
+        height: 0,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    // image1: {
+    //     height: 100,
+    //     width: 100,
+    //     borderRadius: 20,
+    //     position: "absolute",
+    //     top: 0,
+    //     transform: [
+    //         { translateX: -100 },
+    //         { translateY: 50 },
+    //         { rotate: "-15deg" }
+    //     ]
+    // },
+    // image2: {
+    //     height: 100,
+    //     width: 100,
+    //     borderRadius: 20,
+    //     position: "absolute",
+    //     top: 0,
+    //     left: 100,
+    //     transform: [
+    //         { translateX: 80 },
+    //         { translateY: 30 },
+    //         { rotate: "-5deg" }
+    //     ]
+    // },
+    // image3: {
+    //     width: 100,
+    //     height: 100,
+    //     borderRadius: 20,
+    //     position: "absolute",
+    //     top: 170,
+    //     left: -50,
+    //     transform: [
+    //         { translateX: 50 },
+    //         { translateY: 50 },
+    //         { rotate: "15deg" }
+    //     ]
+    // },
+    image4: {
+        height: 200,
+        width: 200,
+        borderRadius: 20,
+        position: "absolute",
+        top: 0,
+        left: 10,
+        transform: [
+            { translateX: 50 },
+            { translateY: 50 },
+            // { rotate: "-15deg" }
+        ]
+    },
+    contentContainer: {
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        marginTop: 220, // Adjusted to start content below images
+        width: "100%"
+    },
+    title: {
+        fontSize: 50,
+        fontWeight: '800',
+        color: COLORS.white
+    },
+    subtitle: {
+        fontSize: 46,
+        fontWeight: '800',
+        color: COLORS.white
+    },
+    description: {
+        fontSize: 16,
+        color: COLORS.white,
+        marginVertical: 4
+    },
+    footerContainer: {
+        flexDirection: "row",
+        marginTop: 12,
+        justifyContent: "center"
+    },
+    footerText: {
+        fontSize: 16,
+        color: COLORS.white
+    },
+    loginText: {
+        fontSize: 16,
+        color: COLORS.white,
+        fontWeight: "bold",
+        marginLeft: 4
+    }
+});
+
+export default Welcome;

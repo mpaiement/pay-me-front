@@ -8,6 +8,7 @@ import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import ProfileScreen from './screens/profileScreen.js';
 import HistoryScreen from './screens/HistoryScreen.js';
+import ScanScreen from './screens/ScanScreen.js';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { View, StyleSheet } from 'react-native';
@@ -88,13 +89,20 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={user ? 'TabNavigator' : 'Welcome'}>
-        {user ? (
+        {user ? ( 
           <>
             <Stack.Screen
               name="TabNavigator"
               component={TabNavigator}
               options={{ headerShown: false }}
               initialParams={{ idUser: user.uid }} // Passez l'ID utilisateur ici
+            />
+              <Stack.Screen
+              name="ScanScreen"
+              component={ScanScreen}
+              options={{
+                headerShown: false,
+              }}
             />
             <Stack.Screen
               name="PaymentForm"
