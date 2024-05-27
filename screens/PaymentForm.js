@@ -10,7 +10,8 @@ import moment from 'moment';
 import { useRoute } from '@react-navigation/native';
 import { getAuth } from 'firebase/auth';
 
-const PaymentForm = ({}) => {
+const PaymentForm = ({setAthentificated}) => {
+
     const [name, setName] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [cvv, setCVV] = useState('');
@@ -21,8 +22,9 @@ const PaymentForm = ({}) => {
     const [cvvError, setCVVError] = useState('');
     const [expiryDateError, setExpiryDateError] = useState('');
     const [cniError, setcniError] = useState('');
+    // const [authentificated, setAthentificated] = useState(false);
     const navigation = useNavigation();
-    
+   
     const route = useRoute();
    
     // const { phone } = route.params;
@@ -47,8 +49,8 @@ const PaymentForm = ({}) => {
                 // phone
                 );  
                 // Envoyer les données au back-end  
-                const response = await axios.post(`http://192.168.1.8:3000/user/create`, {
-           // const response = await axios.post('http:// 192.168.182.204:3000/user/create', {
+                const response = await axios.post(`http://192.168.1.7:3000/user/create`, {
+           // const response = await axios.post('http:// 192.168.1.7:3000/user/create', {
                     idUser:id,
                     name,
                     cardNumber,
@@ -63,6 +65,7 @@ const PaymentForm = ({}) => {
                 if (response.status === 201) {
                     // navigation.navigate('HomeScreen');
                     // Assurez-vous que vous utilisez la bonne référence au navigateur
+                    setAthentificated(true);
                 navigation.navigate('TabNavigator', { screen: 'HomeScreen' });
 
                 } else {

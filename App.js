@@ -13,9 +13,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { View, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import ConfirmationScreen from './screens/ConfirmationScreen.js';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+
 
 function TabNavigator({ route }) {
   const { idUser } = route.params;
@@ -62,7 +64,7 @@ function TabNavigator({ route }) {
 export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
-
+  const [authentificated, setAthentificated] = useState(false);
   useEffect(() => {
     const checkUser = async () => {
       const storedUser = await AsyncStorage.getItem('user');
@@ -88,8 +90,8 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={user ? 'TabNavigator' : 'Welcome'}>
-        {user ? ( 
+      <Stack.Navigator initialRouteName={user && authentificated ? 'TabNavigator' : 'Welcome'}>
+        {user && authentificated ? ( 
           <>
             <Stack.Screen
               name="TabNavigator"
@@ -104,12 +106,26 @@ export default function App() {
                 headerShown: false,
               }}
             />
+               <Stack.Screen
+              name="ConfirmationScreen"
+              component={ConfirmationScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
             <Stack.Screen
               name="PaymentForm"
               component={PaymentForm}
               options={{
                 headerShown: false,
               }}
+              {...props => (
+                <PaymentForm
+                    {...props}
+                  setAthentificated={setAthentificated}
+                />
+            )}
+             
             />
           </>
         ) : (
@@ -141,7 +157,7 @@ export default function App() {
               options={{
                 headerShown: false,
               }}
-            />
+            /> 
           </>
         )}
       </Stack.Navigator>
@@ -164,3 +180,4 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
+

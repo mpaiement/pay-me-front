@@ -1,9 +1,18 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 
 const HomeScreen = ({ navigation }) => {
+  const route = useRoute();
+  const { idUser } = route.params;
+  console.log("🚀 ~ HomeScreen ~ idUser:", idUser)
+
   const handleScanPress = () => {
-    navigation.navigate('ScanScreen');
+    
+    // navigation.navigate('ScanScreen');
+    navigation.navigate('ScanScreen', { idUser })
+ 
+
   };
 
   return (
@@ -11,11 +20,13 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.logoContainer}>
         <Image source={require('../assets/logo.png')} style={styles.logo} />
       </View>
+      {/* <View style={{ width:500}}> */}
       <Image source={require('../assets/back3.jpg')} style={styles.photo} />
       <TouchableOpacity style={styles.button} onPress={handleScanPress}>
         <Text style={styles.buttonText}>Scanner</Text>
       </TouchableOpacity>
-    </View>
+      </View>
+    // </View>
   );
 };
 
@@ -40,7 +51,7 @@ const styles = StyleSheet.create({
   },
   photo: {
     width: 800,
-    height: 200,
+    height: 300,
     resizeMode: 'contain',
     marginBottom: -40,
     
@@ -48,12 +59,14 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#007BFF',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 20,
     marginTop: 80,
+    width: 300,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
+    textAlign: 'center',
   },
 });
 
