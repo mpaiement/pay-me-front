@@ -13,7 +13,7 @@ function ConfirmationScreen() {
 
   const handleConfirm = async () => {
     try {
-      const response = await axios.post('http://192.168.1.7:3000/transaction/create', {
+      const response = await axios.post('http://192.168.43.202:3000/transaction/create', {
         idMarchand,
         amount: parseFloat(amount),
         idUser

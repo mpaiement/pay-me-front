@@ -49,8 +49,8 @@ const PaymentForm = ({setAthentificated}) => {
                 // phone
                 );  
                 // Envoyer les données au back-end  
-                const response = await axios.post(`http://192.168.1.7:3000/user/create`, {
-           // const response = await axios.post('http:// 192.168.1.7:3000/user/create', {
+                const response = await axios.post(`http://192.168.43.202:3000/user/create`, {
+           // const response = await axios.post('http:// 192.168.43.202:3000/user/create', {
                     idUser:id,
                     name,
                     cardNumber,

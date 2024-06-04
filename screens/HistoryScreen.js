@@ -11,7 +11,7 @@ function HistoryScreen() {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.7:3000/transaction/historique/${idUser}`);
+      const response = await axios.get(`http://192.168.43.202:3000/transaction/historique/${idUser}`);
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);
