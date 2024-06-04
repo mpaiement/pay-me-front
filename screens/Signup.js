@@ -16,8 +16,8 @@ const Signup = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    const [emailError, setEmailError] = useState();
     const [phoneError, setPhoneError] = useState('');
+    const [emailError, setEmailError] = useState();
     const [passwordError, setPasswordError] = useState('');
     const [termsError, setTermsError] = useState('');
 
@@ -73,48 +73,48 @@ const Signup = ({ navigation }) => {
                 password
             );
 
-            const idUser = result.user.uid
-            console.log("🚀 ~ Login ~ idUser:", idUser)
-            
-            // Envoyer un e-mail de vérification
-            const authInstance = getAuth();
-            sendEmailVerification(authInstance.currentUser)
-            .then(() => {
-                console.log('Email verification sent successfully!');
-            })
-            .catch((error) => {
-                console.error('Error sending email verification:', error);
-            });
+                const idUser = result.user.uid
+                console.log("🚀 ~ Login ~ idUser:", idUser)
+                
+                // Envoyer un e-mail de vérification
+                const authInstance = getAuth();
+                sendEmailVerification(authInstance.currentUser)
+                .then(() => {
+                    console.log('Email verification sent successfully!');
+                })
+                .catch((error) => {
+                    console.error('Error sending email verification:', error);
+                });
 
-            // Passez à la page prochaine
-            navigation.navigate('PaymentForm');    
+                // Passez à la page prochaine
+                navigation.navigate('PaymentForm');    
 
-    } catch (err) {
-        console.log(err); // Ajoutez cette ligne pour vérifier la structure de l'erreur
-        // Vérifier si l'erreur est due à une adresse e-mail déjà utilisée
-        if (err.code === 'auth/email-already-in-use') {
-            // Alert.alert('Error', "This email address is already in use. Please use a different email address.");
-            setEmailError('This email address is already in use. Please use a different email address.')
-        // } else if (err.code === 'auth/internal-error') {
-        //     // Display the custom error message for internal errors
-        //     setErrors('Internal error occurred. Please try again later.');
-        } else if (err.code === 'auth/invalid-phone-number') {
-            // Afficher le message d'erreur personnalisé pour un numéro de téléphone invalide
-            setPhoneError('Invalid phone number. Please enter a valid phone number.');
-        }else if (err.code === 'auth/phone-number-already-exists') {
-            // Afficher le message d'erreur personnalisé pour un numéro de téléphone déjà utilisé
-            setPhoneError('This phone number is already in use. Please use a different phone number.');
-        } else if (err.code === 'auth/weak-password' || err.code === 'auth/invalid-password') {
-            // Afficher le message d'erreur personnalisé pour un mot de passe invalide
-            setPasswordError('Invalid password. Please enter a valid password.');
-        }
-        else {
-            // Gérer les autres erreurs ici
-            Alert.alert('Error', err.message);
+        } catch (err) {
+            console.log(err); // Ajoutez cette ligne pour vérifier la structure de l'erreur
+            // Vérifier si l'erreur est due à une adresse e-mail déjà utilisée
+            if (err.code === 'auth/email-already-in-use') {
+                // Alert.alert('Error', "This email address is already in use. Please use a different email address.");
+                setEmailError('This email address is already in use. Please use a different email address.')
+            // } else if (err.code === 'auth/internal-error') {
+            //     // Display the custom error message for internal errors
+            //     setErrors('Internal error occurred. Please try again later.');
+            } else if (err.code === 'auth/invalid-phone-number') {
+                // Afficher le message d'erreur personnalisé pour un numéro de téléphone invalide
+                setPhoneError('Invalid phone number. Please enter a valid phone number.');
+            }else if (err.code === 'auth/phone-number-already-exists') {
+                // Afficher le message d'erreur personnalisé pour un numéro de téléphone déjà utilisé
+                setPhoneError('This phone number is already in use. Please use a different phone number.');
+            } else if (err.code === 'auth/weak-password' || err.code === 'auth/invalid-password') {
+                // Afficher le message d'erreur personnalisé pour un mot de passe invalide
+                setPasswordError('Invalid password. Please enter a valid password.');
+            }
+            else {
+                // Gérer les autres erreurs ici
+                Alert.alert('Error', err.message);
+            }
         }
     }
-}
-};
+    };
 console.log(  
     email,
     phone,);  
