@@ -73,21 +73,21 @@ const Signup = ({ navigation }) => {
                 password
             );
 
-            // const idUser = result.user.uid
-            // console.log("🚀 ~ Login ~ idUser:", idUser)
+            const idUser = result.user.uid
+            console.log("🚀 ~ Login ~ idUser:", idUser)
             
-            // // Envoyer un e-mail de vérification
-            // const authInstance = getAuth();
-            // sendEmailVerification(authInstance.currentUser)
-            // .then(() => {
-            //     console.log('Email verification sent successfully!');
-            // })
-            // .catch((error) => {
-            //     console.error('Error sending email verification:', error);
-            // });
+            // Envoyer un e-mail de vérification
+            const authInstance = getAuth();
+            sendEmailVerification(authInstance.currentUser)
+            .then(() => {
+                console.log('Email verification sent successfully!');
+            })
+            .catch((error) => {
+                console.error('Error sending email verification:', error);
+            });
 
             // Passez à la page prochaine
-            navigation.navigate('PaymentForm', {phone});    
+            navigation.navigate('PaymentForm');    
 
     } catch (err) {
         console.log(err); // Ajoutez cette ligne pour vérifier la structure de l'erreur

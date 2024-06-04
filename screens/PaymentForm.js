@@ -1,7 +1,7 @@
 // Dans PaymentForm.js
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable } from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView} from 'react-native';
 import axios from 'axios';
 import COLORS from '../constants/colors';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,55 +10,64 @@ import moment from 'moment';
 import { useRoute } from '@react-navigation/native';
 import { getAuth } from 'firebase/auth';
 
-const PaymentForm = ({}) => {
+const PaymentForm = ({setAthentificated}) => {
+
     const [name, setName] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [cvv, setCVV] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
-    const [idNumber, setIdNumber] = useState('');
+    const [cni, setcni] = useState('');
     const [nameError, setNameError] = useState('');
     const [cardNumberError, setCardNumberError] = useState('');
     const [cvvError, setCVVError] = useState('');
     const [expiryDateError, setExpiryDateError] = useState('');
-    const [idNumberError, setIdNumberError] = useState('');
+    const [cniError, setcniError] = useState('');
+    // const [authentificated, setAthentificated] = useState(false);
     const navigation = useNavigation();
-    
+   
     const route = useRoute();
-    // const { phone} = route.params;
+   
+    // const { phone } = route.params;
    const user = getAuth()
    const id =user?.currentUser?.uid
    const email1 =user?.currentUser?.email
     console.log("🚀 ~ PaymentForm ~ id:", id)
+    // console.log("Phone:", phone);
 
-    const navigatehome = async () => {
+    const navigatehomeScreen = async () => {
         // Vérifiez si tous les champs sont valides
         
-        if (name && cardNumber && cvv && expiryDate && idNumber) {
+        if (name && cardNumber && cvv && expiryDate && cni) {
             try {
             console.log(  id,
                 name,
                 cardNumber,
                 cvv,
                 expiryDate,
-                idNumber,
+                cni,
                 email1,
-                phone
+                // phone
                 );  
-                // Envoyer les données au back-end
-                const response = await axios.post('http://localhost:3000/user/create', {
-                    id,
+                // Envoyer les données au back-end  
+                const response = await axios.post(`http://192.168.1.7:3000/user/create`, {
+           // const response = await axios.post('http:// 192.168.1.7:3000/user/create', {
+                    idUser:id,
                     name,
                     cardNumber,
                     cvv,
                     expiryDate,
-                    idNumber,
-                    email1,
-                    phone
+                    cni,
+                    email:email1,
+                    phone:'+213555555555'
                 });
 
                 // Vérifiez la réponse du serveur
                 if (response.status === 201) {
-                    navigation.navigate('home');
+                    // navigation.navigate('HomeScreen');
+                    // Assurez-vous que vous utilisez la bonne référence au navigateur
+                    setAthentificated(true);
+                navigation.navigate('TabNavigator', { screen: 'HomeScreen' });
+
                 } else {
                     // Gérez les erreurs du serveur ici
                     alert('Erreur lors de la soumission du formulaire');
@@ -73,7 +82,7 @@ const PaymentForm = ({}) => {
             if (!cardNumber) setCardNumberError('Please enter card number');
             if (!cvv) setCVVError('Please enter CVV');
             if (!expiryDate) setExpiryDateError('Please enter expiration date');
-            if (!idNumber) setIdNumberError('Please enter ID card number');
+            if (!cni) setcniError('Please enter ID card number');
         }
     };
     // Valider le format du nom
@@ -86,6 +95,7 @@ const PaymentForm = ({}) => {
             return false;
         }
     };
+    
     // Valider le format du numéro de carte bancaire
     const validateCardNumber = (number) => {
         if (/^\d{16}$/.test(number)) {
@@ -108,15 +118,16 @@ const PaymentForm = ({}) => {
     };
 
    // Fonction de validation du numéro de carte d'identité
-const validateIDNumber = (id) => {
+const validatecni = (id) => {
     if (/^[0-9]{9}$/.test(id)) {
-        setIdNumberError('');
+        setcniError('');
         return true;
     } else {
-        setIdNumberError('Please enter a valid ID card number (9 digits)');
+        setcniError('Please enter a valid ID card number (9 digits)');
         return false;
     }
 };
+
 // Fonction de validation de la date d'expiration
 const validateexpiryDate = (date) => {
     // Vérifier si la date est au bon format (YYYY-MM-DD) et qu'elle est supérieure à la date actuelle
@@ -130,7 +141,9 @@ const validateexpiryDate = (date) => {
 };
 
     return (
+        
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+                        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
              <View style={{ flex: 1, marginHorizontal: 22 }}>
                 <View style={{ marginVertical: 5}}>
                     <Text style={{
@@ -141,7 +154,7 @@ const validateexpiryDate = (date) => {
                     }}>
                         Payment page
                     </Text>
-                    <View style={{ marginBottom: 12 }}>
+                    <View style={{ marginBottom: 1 }}>
                         <Text style={{
                             fontSize: 16,
                             fontWeight: 400,
@@ -168,10 +181,10 @@ const validateexpiryDate = (date) => {
                                 }}
                             />
                         </View>
-                        <Text style={{ color: 'red', marginBottom: 5 }}>{nameError}</Text>
+                        <Text style={{ color: 'red', marginBottom: 1 }}>{nameError}</Text>
                     </View>
 
-                     <View style={{ marginBottom: 12 }}>
+                     <View style={{ marginBottom: 1 }}>
                     <Text style={{
                         fontSize: 16,
                         fontWeight: 400,
@@ -202,18 +215,16 @@ const validateexpiryDate = (date) => {
                     }}
                 />
                 </View>
-                <Text style={{ color: 'red', marginBottom: 5 }}>{cardNumberError}</Text>
+                <Text style={{ color: 'red', marginBottom: 1 }}>{cardNumberError}</Text>
                 </View> 
 
-                <View style={{ marginBottom: 5 }}>
+                <View style={{ marginBottom: 1 }}>
                     <Text style={{
                         fontSize: 16,
                         fontWeight: 400,
                         marginVertical: 8
                     }}>CVV</Text>
 
-
-                    
                 <TextInput
                     placeholder='CVV'
                     value={cvv}
@@ -222,12 +233,12 @@ const validateexpiryDate = (date) => {
                         setCVV(text);
                         validateCVV(text);
                     }}
-                    style={{ marginBottom: 12, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
+                    style={{ marginBottom: 1, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
                 />
 
-<Text style={{ color: 'red', marginBottom: 5 }}>{cvvError}</Text>
+<Text style={{ color: 'red', marginBottom: 1 }}>{cvvError}</Text>
                 </View>
-                <View style={{ marginBottom: 12 }}>
+                <View style={{ marginBottom: 1 }}>
                     <Text style={{
                         fontSize: 16,
                         fontWeight: 400,
@@ -242,12 +253,12 @@ const validateexpiryDate = (date) => {
                         setExpiryDate(text);
                         validateexpiryDate(text);
                     }}
-                    style={{ marginBottom: 12, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
+                    style={{ marginBottom: 1, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
                 />
-                 <Text style={{ color: 'red', marginBottom: 5 }}>{expiryDateError}</Text>
+                 <Text style={{ color: 'red', marginBottom: 1 }}>{expiryDateError}</Text>
                  </View>
 
-                 <View style={{ marginBottom: 5 }}>
+                 <View style={{ marginBottom: 1 }}>
                     <Text style={{
                         fontSize: 16,
                         fontWeight: 400,
@@ -256,15 +267,15 @@ const validateexpiryDate = (date) => {
 
                 <TextInput
                     placeholder='ID card number'
-                    value={idNumber}
+                    value={cni}
                     onChangeText={(text) => {
-                        setIdNumber(text);
-                        validateIDNumber(text);
+                        setcni(text);
+                        validatecni(text);
                     }}
                     keyboardType='numeric'
-                    style={{ marginBottom: 12, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
+                    style={{ marginBottom: 1, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
                 />
-                <Text style={{ color: 'red', marginBottom: 5 }}>{idNumberError}</Text>
+                <Text style={{ color: 'red', marginBottom: 1 }}>{cniError}</Text>
 
                 </View>
                     </View>
@@ -278,11 +289,12 @@ const validateexpiryDate = (date) => {
                             marginTop: 0
                         }}
                        
-                        onPress={navigatehome}
+                        onPress={navigatehomeScreen}
                     >
                         <Text style={{ color: COLORS.white, fontSize: 18 }}>Sign Up</Text>
                     </Pressable>
                     </View>
+                    </ScrollView>
         </SafeAreaView>
     );
 };

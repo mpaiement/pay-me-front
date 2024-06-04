@@ -34,7 +34,8 @@ const Login = ({ navigation }) => {
             const idUser = result.user.uid
             console.log("🚀 ~ Login ~ idUser:", idUser)
             
-            navigation.navigate('home');
+            // navigation.navigate('homeScreen');
+            navigation.navigate('TabNavigator', { screen: 'HomeScreen' });
             
 
         }catch (err) {
