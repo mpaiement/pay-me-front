@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
 const HomeScreen = ({ navigation }) => {
   const route = useRoute();
   const { idUser } = route.params;
@@ -14,9 +15,22 @@ const HomeScreen = ({ navigation }) => {
  
 
   };
+  const handleLogout = () => {
+    signOut(auth) // Utilisez la fonction de déconnexion de Firebase
+      .then(() => {
+        navigation.navigate('Login'); // Redirigez l'utilisateur vers l'écran de connexion
+      })
+      .catch(error => {
+        console.error('Error signing out:', error);
+      });
+  };
 
   return (
     <View style={styles.container}>
+       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutButtonText}>Logout</Text>
+      </TouchableOpacity>
+
       <View style={styles.logoContainer}>
         <Image source={require('../assets/logo.png')} style={styles.logo} />
       </View>
@@ -36,6 +50,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+  },
+  logoutButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    padding: 10,
+  },
+  logoutButtonText: {
+    color: '#007BFF',
+    fontSize: 16,
   },
   logoContainer: {
     position: 'absolute',
@@ -68,6 +92,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
-});
+}); 
 
 export default HomeScreen;
