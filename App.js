@@ -132,19 +132,20 @@ export default function App() {
             )}
              
             /> */}
-            {/* la c'est un essai kan */}
-            <Stack.Screen
+
+<Stack.Screen
               name="Signup"
               component={Signup}
               options={{
                 headerShown: false,
               }}
             />
+            
             <Stack.Screen name="PaymentForm" options={{ headerShown: false }}>
               {(props) => (
                 <PaymentForm {...props} setAthentificated={setAthentificated} />
               )}
-            </Stack.Screen>
+</Stack.Screen>
           </>
         ) : (
           <>
@@ -169,8 +170,6 @@ export default function App() {
                 headerShown: false,
               }}
             />
-          {/* celui la essaye le apres si ca marche pas le test 1  */}
-          
             {/* <Stack.Screen
               name="PaymentForm"
               component={PaymentForm}
