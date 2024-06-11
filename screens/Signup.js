@@ -90,15 +90,7 @@ const Signup = ({ navigation }) => {
             if (err.code === 'auth/email-already-in-use') {
                 // Alert.alert('Error', "This email address is already in use. Please use a different email address.");
                 setEmailError('This email address is already in use. Please use a different email address.')
-            // } else if (err.code === 'auth/internal-error') {
-            //     // Display the custom error message for internal errors
-            //     setErrors('Internal error occurred. Please try again later.');
-            // } else if (err.code === 'auth/invalid-phone-number') {
-            //     // Afficher le message d'erreur personnalisé pour un numéro de téléphone invalide
-            //     setPhoneError('Invalid phone number. Please enter a valid phone number.');
-            // }else if (err.code === 'auth/phone-number-already-exists') {
-            //     // Afficher le message d'erreur personnalisé pour un numéro de téléphone déjà utilisé
-            //     setPhoneError('This phone number is already in use. Please use a different phone number.');
+          
             } else if (err.code === 'auth/weak-password' || err.code === 'auth/invalid-password') {
                 // Afficher le message d'erreur personnalisé pour un mot de passe invalide
                 setPasswordError('Invalid password. Please enter a valid password.');
