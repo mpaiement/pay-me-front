@@ -15,7 +15,7 @@ function ConfirmationScreen() {
     // Fetch merchant details
     const fetchMerchantDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/marchand/${idMarchand}`);
+        const response = await axios.get(`http://192.168.137.1:3000/marchand/${idMarchand}`);
         const { name } = response.data[0];
         setMerchantName(name);
       } catch (error) {
@@ -31,7 +31,7 @@ function ConfirmationScreen() {
 
   const handleConfirm = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/transaction/create', {
+      const response = await axios.post('http://192.168.137.1:3000/transaction/create', {
         idMarchand,
         amount: parseFloat(amount),
         idUser
@@ -60,11 +60,14 @@ function ConfirmationScreen() {
       ) : (
         <Text>Chargement des informations du marchand...</Text>
       )}
-      <Text>ID du marchand: {idMarchand}</Text>
       <Text>Montant: {amount}</Text>
       <View style={styles.buttonContainer}>
-        <Button title="Confirmer le paiement" onPress={handleConfirm} />
-        <Button title="Annuler le paiement" onPress={handleCancel} />
+        <View style={styles.button}>
+          <Button title="Confirmer le paiement" onPress={handleConfirm} />
+        </View>
+        <View style={styles.button}>
+          <Button title="Annuler le paiement" onPress={handleCancel} />
+        </View>
       </View>
     </View>
   );
@@ -77,10 +80,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: 90,
   },
+  button: {
+    marginVertical: 10,
+  },
+ Text:{
+  color: 'black',
+ }
 });
 
 export default ConfirmationScreen;

@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { View, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConfirmationScreen from './screens/ConfirmationScreen.js';
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -94,6 +95,7 @@ export default function App() {
   if (initializing) return null; // Peut-être afficher un écran de chargement
 
   return (
+    
     <NavigationContainer>
       <Stack.Navigator initialRouteName={user && authentificated ? 'TabNavigator' : 'Welcome'}>
         {user && authentificated ? ( 
@@ -181,6 +183,7 @@ export default function App() {
         )}
       </Stack.Navigator>
     </NavigationContainer>
+ 
   );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text, View, FlatList, StyleSheet, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import dayjs from 'dayjs';
@@ -7,17 +7,19 @@ import dayjs from 'dayjs';
 function HistoryScreen() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const route = useRoute();
   const { idUser } = route.params;
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/transaction/historique/${idUser}`);
+      const response = await axios.get(`http://192.168.137.1:3000/transaction/historique/${idUser}`);
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -25,10 +27,17 @@ function HistoryScreen() {
     fetchTransactions();
   }, []);
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchTransactions();
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
-      <Text style={styles.createdDate}>{dayjs(item.createdDate).format('DD/MM/YYYY        HH:mm:ss')}</Text>
-      <Text style={styles.amount}>{item.amount} DA</Text>
+      <ScrollView>
+        <Text style={styles.createdDate}>{dayjs(item.createdDate).format('DD/MM/YYYY   HH:mm')}</Text>
+        <Text style={styles.amount}>{item.amount} DA</Text>
+      </ScrollView>
     </View>
   );
 
@@ -46,6 +55,13 @@ function HistoryScreen() {
         data={transactions}
         renderItem={renderItem}
         keyExtractor={item => item.id}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#0000ff']}
+          />
+        }
       />
     </View>
   );
@@ -67,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     borderRadius: 20,
     marginBottom: 10,
-    borderColor:'#007bff',
+    borderColor: '#007bff',
     borderWidth: 1, // Ajout de la bordure
   },
   createdDate: {
