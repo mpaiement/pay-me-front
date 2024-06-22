@@ -141,7 +141,7 @@ const Login = ({ navigation }) => {
                     </View>
                 </View>
 
-                <View style={{
+                {/* <View style={{
                     flexDirection: 'row',
                     marginVertical: 6
                 }}>
@@ -153,7 +153,7 @@ const Login = ({ navigation }) => {
                     />
 
                     <Text>Remenber Me</Text>
-                </View>
+                </View> */}
 
                 <Button
                     title="Login"
