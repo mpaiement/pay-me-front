@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import dayjs from 'dayjs';
 
 function HistoryScreen() {
   const [transactions, setTransactions] = useState([]);
@@ -11,7 +12,7 @@ function HistoryScreen() {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.7:3000/transaction/historique/${idUser}`);
+      const response = await axios.get(`http://localhost:3000/transaction/historique/${idUser}`);
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -26,7 +27,7 @@ function HistoryScreen() {
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
-      <Text style={styles.createdDate}>{item.createdDate}</Text>
+      <Text style={styles.createdDate}>{dayjs(item.createdDate).format('DD/MM/YYYY        HH:mm:ss')}</Text>
       <Text style={styles.amount}>{item.amount} DA</Text>
     </View>
   );

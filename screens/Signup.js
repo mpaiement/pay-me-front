@@ -14,9 +14,9 @@ const Signup = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
+    // const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    const [phoneError, setPhoneError] = useState('');
+    // const [phoneError, setPhoneError] = useState('');
     const [emailError, setEmailError] = useState();
     const [passwordError, setPasswordError] = useState('');
     const [termsError, setTermsError] = useState('');
@@ -26,10 +26,10 @@ const Signup = ({ navigation }) => {
         setEmailError(''); // Réinitialise le message d'erreur
     };
 
-    const changephone = (text) => {
-        setPhone(text);
-        setPhoneError(''); // Réinitialise le message d'erreur
-    }; 
+    // const changephone = (text) => {
+    //     setPhone(text);
+    //     setPhoneError(''); // Réinitialise le message d'erreur
+    // }; 
     
     
     const changePassword = (text) => {
@@ -44,11 +44,6 @@ const Signup = ({ navigation }) => {
         setEmailError('Please enter your email address');
         isValid = false;
     }       
-
-    if (!phone) {
-        setPhoneError('Please enter your mobile number');
-        isValid = false;
-    }
 
     if (!password) {
         setPasswordError('Please enter your password');
@@ -95,15 +90,7 @@ const Signup = ({ navigation }) => {
             if (err.code === 'auth/email-already-in-use') {
                 // Alert.alert('Error', "This email address is already in use. Please use a different email address.");
                 setEmailError('This email address is already in use. Please use a different email address.')
-            // } else if (err.code === 'auth/internal-error') {
-            //     // Display the custom error message for internal errors
-            //     setErrors('Internal error occurred. Please try again later.');
-            } else if (err.code === 'auth/invalid-phone-number') {
-                // Afficher le message d'erreur personnalisé pour un numéro de téléphone invalide
-                setPhoneError('Invalid phone number. Please enter a valid phone number.');
-            }else if (err.code === 'auth/phone-number-already-exists') {
-                // Afficher le message d'erreur personnalisé pour un numéro de téléphone déjà utilisé
-                setPhoneError('This phone number is already in use. Please use a different phone number.');
+          
             } else if (err.code === 'auth/weak-password' || err.code === 'auth/invalid-password') {
                 // Afficher le message d'erreur personnalisé pour un mot de passe invalide
                 setPasswordError('Invalid password. Please enter a valid password.');
@@ -116,8 +103,7 @@ const Signup = ({ navigation }) => {
     }
     };
 console.log(  
-    email,
-    phone,);  
+    email,);  
     return (    
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -166,7 +152,7 @@ console.log(
                     
                 </View>
               
-                <View style={{ marginBottom: 12 }}>
+                {/* <View style={{ marginBottom: 12 }}>
                     <Text style={{
                         fontSize: 16,
                         fontWeight: 400,
@@ -213,7 +199,7 @@ console.log(
                         {phoneError && <Text style={{ color: 'red' }}>{phoneError}</Text>}
                     
 
-                </View>
+                </View> */}
 
                 <View style={{ marginBottom: 12 }}>
                     <Text style={{

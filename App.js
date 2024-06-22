@@ -17,9 +17,7 @@ import ConfirmationScreen from './screens/ConfirmationScreen.js';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
-
-function TabNavigator({ route }) {
+export function TabNavigator({ route }) {
   const { idUser } = route.params;
 
   return (
@@ -34,6 +32,7 @@ function TabNavigator({ route }) {
           } else if (route.name === 'History') {
             iconName = 'history';
           }
+
           return (
             <View style={styles.iconContainer}>
               <Icon name={iconName} size={size} color={color} />
@@ -70,9 +69,15 @@ export default function App() {
       const storedUser = await AsyncStorage.getItem('user');
       if (storedUser) {
         setUser(JSON.parse(storedUser));
+        setAthentificated(true);
+        
+      }else{
+        setAthentificated(false);
       }
+
       const subscriber = onAuthStateChanged(auth, (user) => {
         setUser(user);
+        setAthentificated(true);
         if (user) {
           AsyncStorage.setItem('user', JSON.stringify(user));
         } else {
@@ -113,7 +118,7 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="PaymentForm"
               component={PaymentForm}
               options={{
@@ -126,7 +131,20 @@ export default function App() {
                 />
             )}
              
+            /> */}
+            {/* la c'est un essai kan */}
+            <Stack.Screen
+              name="Signup"
+              component={Signup}
+              options={{
+                headerShown: false,
+              }}
             />
+            <Stack.Screen name="PaymentForm" options={{ headerShown: false }}>
+              {(props) => (
+                <PaymentForm {...props} setAthentificated={setAthentificated} />
+              )}
+            </Stack.Screen>
           </>
         ) : (
           <>
@@ -151,13 +169,15 @@ export default function App() {
                 headerShown: false,
               }}
             />
-            <Stack.Screen
+          {/* celui la essaye le apres si ca marche pas le test 1  */}
+          
+            {/* <Stack.Screen
               name="PaymentForm"
               component={PaymentForm}
               options={{
                 headerShown: false,
               }}
-            /> 
+            />  */}
           </>
         )}
       </Stack.Navigator>

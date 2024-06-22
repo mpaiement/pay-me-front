@@ -1,5 +1,3 @@
-// Dans PaymentForm.js
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView} from 'react-native';
 import axios from 'axios';
@@ -49,8 +47,8 @@ const PaymentForm = ({setAthentificated}) => {
                 // phone
                 );  
                 // Envoyer les données au back-end  
-                const response = await axios.post(`http://192.168.1.7:3000/user/create`, {
-           // const response = await axios.post('http:// 192.168.1.7:3000/user/create', {
+                const response = await axios.post(`http://localhost:3000/user/create`, {
+           // const response = await axios.post('http:// localhost:3000/user/create', {
                     idUser:id,
                     name,
                     cardNumber,
@@ -63,8 +61,7 @@ const PaymentForm = ({setAthentificated}) => {
 
                 // Vérifiez la réponse du serveur
                 if (response.status === 201) {
-                    // navigation.navigate('HomeScreen');
-                    // Assurez-vous que vous utilisez la bonne référence au navigateur
+                   
                     setAthentificated(true);
                 navigation.navigate('TabNavigator', { screen: 'HomeScreen' });
 
@@ -300,4 +297,3 @@ const validateexpiryDate = (date) => {
 };
 
 export default PaymentForm;
-

@@ -31,7 +31,7 @@ function ProfileScreen() {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.7:3000/user/${idUser}`);
+      const response = await axios.get(`http://localhost:3000/user/${idUser}`);
       const profileData = response.data[0];
       console.log("🚀 ~ getProfile ~ profileData:", profileData);
 
@@ -50,7 +50,7 @@ function ProfileScreen() {
 
   const updateProfile = async () => {
     try {
-      await axios.put(`http://192.168.1.7:3000/user/${idUser}`, formData);
+      await axios.patch(`http://localhost:3000/user/${idUser}`, formData); // Utilisez axios.patch au lieu de axios.put
       Alert.alert("Succès", "Profil mis à jour avec succès");
     } catch (error) {
       console.error("Erreur lors de la mise à jour du profil :", error);
