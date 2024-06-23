@@ -102,13 +102,13 @@ const PaymentForm = ({ setAthentificated }) => {
     };
 
     const validateexpiryDate = (date) => {
-        if (moment(date, 'YYYY-MM', true).isValid() && moment(date, 'YYYY-MM').isAfter(moment(), 'month')) {
+        if (moment(date, 'YY/MM', true).isValid() && moment(date, 'YY/MM').isAfter(moment(), 'month')) {
             setExpiryDateError('');
-            const newExpiryDate = moment(date, 'YYYY-MM').add(30, 'days');
+            const newExpiryDate = moment(date, 'YY/MM').add(30, 'days');
             setDisplayExpiryDate(newExpiryDate.format('MM-YYYY'));
             return true;
         } else {
-            setExpiryDateError('Please enter a valid expiration date (YYYY-MM)');
+            setExpiryDateError('Please enter a valid expiration date (YY/MM)');
             return false;
         }
     };
@@ -218,7 +218,7 @@ const PaymentForm = ({ setAthentificated }) => {
                             }}>Expiration Date</Text>
 
                             <TextInput
-                                placeholder='Expiration Date (YYYY-MM)'
+                                placeholder='Expiration Date (YY/MM)'
                                 value={expiryDate}
                                 onChangeText={(text) => {
                                     setExpiryDate(text);
@@ -227,7 +227,7 @@ const PaymentForm = ({ setAthentificated }) => {
                                 style={{ marginBottom: 1, borderWidth: 1, borderColor: COLORS.black, borderRadius: 8, height: 48, paddingLeft: 22 }}
                             />
                             <Text style={{ color: 'red', marginBottom: 1 }}>{expiryDateError}</Text>
-                            <Text style={{ color: COLORS.black, marginBottom: 1 }}>Expiry Date (YYYY-MM): {displayExpiryDate}</Text>
+                            {/* <Text style={{ color: COLORS.black, marginBottom: 1 }}>Expiry Date (YYYY-MM): {displayExpiryDate}</Text> */}
                         </View>
 
                         <View style={{ marginBottom: 1 }}>
