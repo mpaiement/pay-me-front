@@ -39,11 +39,11 @@ const PaymentForm = ({ setAthentificated }) => {
             try {
                 const response = await axios.post(`http://192.168.1.43:3000/user/create`, {
                     idUser: id,
-                    name,
-                    cardNumber,
+                    name: name.trim(),
+                    cardNumber: cardNumber.trim(),
                     cvv,
                     expiryDate,
-                    cni,
+                    cni: cni.trim(),
                     email: email1,
                     phone: '+213555555555'
                 });
