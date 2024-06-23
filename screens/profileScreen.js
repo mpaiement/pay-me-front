@@ -31,7 +31,7 @@ function ProfileScreen() {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(`http://192.168.137.1:3000/user/${idUser}`);
+      const response = await axios.get(`http://192.168.1.43:3000/user/${idUser}`);
       const profileData = response.data[0];
       console.log("🚀 ~ getProfile ~ profileData:", profileData);
 
@@ -50,7 +50,7 @@ function ProfileScreen() {
 
   const updateProfile = async () => {
     try {
-      await axios.patch(`http://192.168.137.1:3000/user/${idUser}`, formData); // Utilisez axios.patch au lieu de axios.put
+      await axios.patch(`http://192.168.1.43:3000/user/${idUser}`, formData); // Utilisez axios.patch au lieu de axios.put
       Alert.alert("Succès", "Profil mis à jour avec succès");
     } catch (error) {
       console.error("Erreur lors de la mise à jour du profil :", error);
@@ -72,7 +72,7 @@ function ProfileScreen() {
     borderWidth: 1,
     marginBottom: 5,
     paddingHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: 5,
     backgroundColor: '#f3f4f6'
   });
 
@@ -141,8 +141,8 @@ function ProfileScreen() {
                 onFocus={() => handleInputClick('cni')}
               />
             </View>
-            <View style={{ alignItems: 'center' }}>
-              <TouchableOpacity onPress={updateProfile} style={{ borderRadius: 20, overflow: 'hidden', width: 150, height: 40, backgroundColor: '#007BFF', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ alignItems: 'center', }}>
+              <TouchableOpacity onPress={updateProfile} style={{ borderRadius: 5, overflow: 'hidden', width: 150, height: 40, backgroundColor: '#05c', justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ color: '#fff' }}>Update Profile</Text>
               </TouchableOpacity>
             </View>

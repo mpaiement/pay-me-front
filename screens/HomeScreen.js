@@ -9,10 +9,10 @@ const HomeScreen = ({ navigation }) => {
   console.log("🚀 ~ HomeScreen ~ idUser:", idUser)
 
   const handleScanPress = () => {
-    
+
     // navigation.navigate('ScanScreen');
     navigation.navigate('ScanScreen', { idUser })
- 
+
 
   };
   const handleLogout = () => {
@@ -27,20 +27,21 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
 
       <View style={styles.logoContainer}>
         <Image source={require('../assets/logo.png')} style={styles.logo} />
       </View>
-      {/* <View style={{ width:500}}> */}
+      <View>
+
+      </View>
       <Image source={require('../assets/back3.jpg')} style={styles.photo} />
       <TouchableOpacity style={styles.button} onPress={handleScanPress}>
         <Text style={styles.buttonText}>Scanner</Text>
       </TouchableOpacity>
-      </View>
-    // </View>
+    </View>
   );
 };
 
@@ -52,13 +53,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   logoutButton: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#05c',
     position: 'absolute',
     top: 20,
     right: 20,
     padding: 10,
+    borderRadius: 5
   },
   logoutButtonText: {
-    color: '#007BFF',
+    color: '#05c',
     fontSize: 16,
   },
   logoContainer: {
@@ -78,20 +83,21 @@ const styles = StyleSheet.create({
     height: 300,
     resizeMode: 'contain',
     marginBottom: -40,
-    
+
   },
   button: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#05c',
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 5,
     marginTop: 80,
     width: 300,
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: '500',
     textAlign: 'center',
   },
-}); 
+});
 
 export default HomeScreen;

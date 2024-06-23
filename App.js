@@ -40,7 +40,7 @@ export function TabNavigator({ route }) {
             </View>
           );
         },
-        tabBarActiveTintColor: 'blue',
+        tabBarActiveTintColor: '#05c',
         tabBarInactiveTintColor: 'gray',
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -71,8 +71,8 @@ export default function App() {
       if (storedUser) {
         setUser(JSON.parse(storedUser));
         setAthentificated(true);
-        
-      }else{
+
+      } else {
         setAthentificated(false);
       }
 
@@ -95,10 +95,10 @@ export default function App() {
   if (initializing) return null; // Peut-être afficher un écran de chargement
 
   return (
-    
+
     <NavigationContainer>
       <Stack.Navigator initialRouteName={user && authentificated ? 'TabNavigator' : 'Welcome'}>
-        {user && authentificated ? ( 
+        {user && authentificated ? (
           <>
             <Stack.Screen
               name="TabNavigator"
@@ -106,14 +106,14 @@ export default function App() {
               options={{ headerShown: false }}
               initialParams={{ idUser: user.uid }} // Passez l'ID utilisateur ici
             />
-              <Stack.Screen
+            <Stack.Screen
               name="ScanScreen"
               component={ScanScreen}
               options={{
                 headerShown: false,
               }}
             />
-               <Stack.Screen
+            <Stack.Screen
               name="ConfirmationScreen"
               component={ConfirmationScreen}
               options={{
@@ -135,19 +135,19 @@ export default function App() {
              
             /> */}
 
-<Stack.Screen
+            <Stack.Screen
               name="Signup"
               component={Signup}
               options={{
                 headerShown: false,
               }}
             />
-            
+
             <Stack.Screen name="PaymentForm" options={{ headerShown: false }}>
               {(props) => (
                 <PaymentForm {...props} setAthentificated={setAthentificated} />
               )}
-</Stack.Screen>
+            </Stack.Screen>
           </>
         ) : (
           <>
@@ -183,7 +183,7 @@ export default function App() {
         )}
       </Stack.Navigator>
     </NavigationContainer>
- 
+
   );
 }
 

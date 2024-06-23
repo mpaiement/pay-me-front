@@ -13,7 +13,7 @@ function HistoryScreen() {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get(`http://192.168.137.1:3000/transaction/historique/${idUser}`);
+      const response = await axios.get(`http://192.168.1.43:3000/transaction/historique/${idUser}`);
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -33,11 +33,9 @@ function HistoryScreen() {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.item}>
-      <ScrollView>
+    <View key={item.id} style={styles.item} >
         <Text style={styles.createdDate}>{dayjs(item.createdDate).format('DD/MM/YYYY   HH:mm')}</Text>
         <Text style={styles.amount}>{item.amount} DA</Text>
-      </ScrollView>
     </View>
   );
 
@@ -78,20 +76,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 25,
     paddingHorizontal: 20,
     backgroundColor: '#f5f5f5',
     borderRadius: 20,
     marginBottom: 10,
-    borderColor: '#007bff',
-    borderWidth: 1, // Ajout de la bordure
+    // borderColor: '#007bff',
+    // borderWidth: 1, // Ajout de la bordure
   },
   createdDate: {
-    fontSize: 16,
+    fontSize: 17,
     color: '#333',
   },
   amount: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#007bff',
   },

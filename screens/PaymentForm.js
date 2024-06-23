@@ -37,7 +37,7 @@ const PaymentForm = ({ setAthentificated }) => {
 
         if (isNameValid && isCardNumberValid && isCVVValid && isExpiryDateValid && isCniValid) {
             try {
-                const response = await axios.post(`http://192.168.137.1:3000/user/create`, {
+                const response = await axios.post(`http://192.168.1.43:3000/user/create`, {
                     idUser: id,
                     name,
                     cardNumber,
